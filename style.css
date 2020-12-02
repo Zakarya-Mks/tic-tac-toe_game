@@ -1,0 +1,308 @@
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+
+/* HTML5 display-role reset for older browsers */
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+  display: block;
+}
+
+body {
+  line-height: 1;
+}
+
+ol,
+ul {
+  list-style: none;
+}
+
+blockquote,
+q {
+  quotes: none;
+}
+
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+  content: "";
+  content: none;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+*::before,
+*::after,
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: sans-serif;
+}
+
+.main_container {
+  display: flex;
+  max-width: 1140px;
+  height: 100vh;
+  margin-left: auto;
+  margin-right: auto;
+}
+.main_container .left_section {
+  padding: 2rem;
+  background-color: #e5e5e5;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+}
+.main_container .left_section .heading {
+  display: flex;
+}
+.main_container .left_section .heading .branding {
+  display: flex;
+  align-items: center;
+}
+.main_container .left_section .heading .branding img {
+  width: 50px;
+  height: 50px;
+  margin-right: 1rem;
+}
+.main_container .left_section .heading .branding h1 {
+  font-size: 2.5rem;
+  line-height: 1.2;
+  text-transform: capitalize;
+}
+.main_container .left_section .heading .burger_menu_btn {
+  position: absolute;
+  right: -4rem;
+  top: 2rem;
+}
+.main_container .left_section .heading .burger_menu_btn img {
+  width: 50px;
+  height: 50px;
+}
+.main_container .left_section .heading .burger_menu_btn img:hover {
+  cursor: pointer;
+}
+.main_container .left_section .stats {
+  border: solid 2px #d3d3d3;
+  border-radius: 3px;
+  padding: 1rem;
+}
+.main_container .left_section .stats .score h2 {
+  font-size: 1.5rem;
+  text-align: center;
+  text-transform: capitalize;
+  margin-bottom: 1.5rem;
+}
+.main_container .left_section .stats .score .first_score,
+.main_container .left_section .stats .score .second_score {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+.main_container .left_section .stats .score .first_score span:first-child,
+.main_container .left_section .stats .score .second_score span:first-child {
+  margin-right: 1rem;
+  text-transform: capitalize;
+}
+.main_container .left_section .stats .round_nbr {
+  border-top: solid 2px #d3d3d3;
+  font-size: 1.7rem;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  text-align: center;
+}
+.main_container .left_section .stats .round_nbr span:first-child {
+  margin-right: 1rem;
+  text-transform: capitalize;
+}
+.main_container .left_section .mark_selection {
+  border: solid 2px #d3d3d3;
+  border-radius: 4px;
+  padding: 1.5rem;
+  position: relative;
+}
+.main_container .left_section .mark_selection .marks .o, .main_container .left_section .mark_selection .marks .x {
+  padding: 0.5rem;
+  background-color: black;
+  border-left: solid #e5e5e5 2px;
+}
+.main_container .left_section .mark_selection .marks .o:hover, .main_container .left_section .mark_selection .marks .x:hover {
+  cursor: pointer;
+}
+.main_container .left_section .mark_selection h2 {
+  font-size: 1.3rem;
+  text-transform: capitalize;
+  position: absolute;
+  top: -14px;
+  left: 5px;
+  background-color: #e5e5e5;
+  padding: 0 5px;
+}
+.main_container .left_section .mark_selection .marks {
+  display: flex;
+  justify-content: space-around;
+}
+.main_container .left_section .mark_selection .marks .x img {
+  filter: invert(100%);
+}
+.main_container .left_section .mark_selection .marks .o img {
+  filter: invert(100%);
+}
+.main_container .left_section .mark_selection .marks .selected {
+  border-left: solid 4px red;
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+}
+.main_container .right_section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  padding-top: 5rem;
+}
+.main_container .right_section .turns {
+  display: flex;
+  justify-content: center;
+  font-size: 1.4rem;
+  text-transform: capitalize;
+}
+.main_container .right_section .turns .player {
+  display: flex;
+  align-items: center;
+}
+.main_container .right_section .turns .player div {
+  width: 30px;
+  height: 30px;
+  margin-right: 0.5rem;
+  background-color: #e5e5e5;
+}
+.main_container .right_section .turns .player div.active {
+  background-color: dodgerblue;
+}
+.main_container .right_section .turns .player:first-child {
+  margin-right: 2rem;
+}
+.main_container .right_section .game_board {
+  display: grid;
+  grid-template-columns: repeat(3, 100px);
+  grid-gap: 20px;
+  justify-content: center;
+}
+.main_container .right_section .game_board .board_column {
+  height: 100px;
+  background-color: burlywood;
+}
+.main_container .right_section .game_board .board_column:hover {
+  cursor: pointer;
+}
+.main_container .right_section .winner {
+  font-size: 2rem;
+  text-transform: capitalize;
+  text-align: center;
+}
+
+/*# sourceMappingURL=style.css.map */

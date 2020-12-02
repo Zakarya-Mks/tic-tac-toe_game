@@ -1,0 +1,211 @@
+@import 'reset';
+@import 'variables';
+@import 'mixins';
+
+*::before,
+*::after,
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: sans-serif;
+}
+
+.main_container {
+  display: flex;
+  max-width: 1140px;
+  height: 100vh;
+  @include h-center;
+
+  .left_section {
+    padding: 2rem;
+    background-color: $left-section-bg-color;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+
+    .heading {
+      display: flex;
+
+      .branding {
+        display: flex;
+        align-items: center;
+
+        img {
+          width: 50px;
+          height: 50px;
+          margin-right: 1rem;
+        }
+
+        h1 {
+          font-size: 2.5rem;
+          line-height: 1.2;
+          text-transform: capitalize;
+        }
+      }
+      .burger_menu_btn {
+        position: absolute;
+        right: -4rem;
+        top: 2rem;
+
+        img {
+          width: 50px;
+          height: 50px;
+
+          &:hover {
+            @include pointer;
+          }
+        }
+      }
+    }
+    .stats {
+      border: $left-section-border;
+      border-radius: 3px;
+      padding: 1rem;
+
+      .score {
+        h2 {
+          font-size: 1.5rem;
+          text-align: center;
+          text-transform: capitalize;
+          margin-bottom: 1.5rem;
+        }
+
+        .first_score,
+        .second_score {
+          font-size: 1.2rem;
+          margin-bottom: 0.5rem;
+
+          span:first-child {
+            margin-right: 1rem;
+            text-transform: capitalize;
+          }
+        }
+      }
+
+      .round_nbr {
+        border-top: $left-section-border;
+        font-size: 1.7rem;
+        margin-top: 1rem;
+        padding-top: 1rem;
+        text-align: center;
+
+        span:first-child {
+          margin-right: 1rem;
+          text-transform: capitalize;
+        }
+      }
+    }
+    .mark_selection {
+      border: $left-section-border;
+      border-radius: 4px;
+      padding: 1.5rem;
+      position: relative;
+
+      %background_and_padding {
+        padding: 0.5rem;
+        background-color: black;
+        border-left: solid $left-section-bg-color 2px;
+
+        &:hover {
+          @include pointer;
+        }
+      }
+
+      h2 {
+        font-size: 1.3rem;
+        text-transform: capitalize;
+        position: absolute;
+        top: -14px;
+        left: 5px;
+        background-color: $left-section-bg-color;
+        padding: 0 5px;
+      }
+
+      .marks {
+        display: flex;
+        justify-content: space-around;
+
+        .x {
+          @extend %background_and_padding;
+
+          img {
+            filter: invert(100%);
+          }
+        }
+
+        .o {
+          @extend %background_and_padding;
+
+          img {
+            filter: invert(100%);
+          }
+        }
+
+        .selected {
+          border-left: solid 4px red;
+          border-top-left-radius: 2px;
+          border-bottom-left-radius: 2px;
+        }
+      }
+    }
+  }
+  .right_section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    padding-top: 5rem;
+
+    .turns {
+      display: flex;
+      justify-content: center;
+      font-size: 1.4rem;
+      text-transform: capitalize;
+
+      .player {
+        display: flex;
+        align-items: center;
+
+        div {
+          width: 30px;
+          height: 30px;
+          margin-right: 0.5rem;
+          background-color: $left-section-bg-color;
+
+          &.active {
+            background-color: dodgerblue;
+          }
+        }
+
+        &:first-child {
+          margin-right: 2rem;
+        }
+      }
+    }
+
+    .game_board {
+      display: grid;
+      grid-template-columns: repeat(3, 100px);
+      grid-gap: 20px;
+      justify-content: center;
+
+      .board_column {
+        height: 100px;
+        background-color: burlywood;
+
+        &:hover {
+          @include pointer;
+        }
+      }
+    }
+
+    .winner {
+      font-size: 2rem;
+      text-transform: capitalize;
+      text-align: center;
+    }
+  }
+}
