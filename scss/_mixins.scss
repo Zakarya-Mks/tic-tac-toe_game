@@ -6,3 +6,40 @@
 @mixin pointer {
   cursor: pointer;
 }
+
+@mixin h50w50-px {
+  width: 50px;
+  height: 50px;
+}
+
+@mixin fontS_2-5rem {
+  font-size: 2.5rem;
+}
+
+@mixin mb-3rem {
+  margin-bottom: 3rem;
+}
+
+@mixin b-radius-3px {
+  border-radius: 3px;
+}
+
+@mixin screen-size($size) {
+  @if ($size == 'sm') {
+    @media screen and (min-width: 576px) {
+      @content;
+    }
+  } @else if ($size == 'md') {
+    @media screen and (min-width: 768px) {
+      @content;
+    }
+  } @else if ($size == 'lg') {
+    @media screen and (min-width: 992px) {
+      @content;
+    }
+  } @else if ($size == 'xl') {
+    @media screen and (min-width: 1200px) {
+      @content;
+    }
+  }
+}

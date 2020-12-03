@@ -17,195 +17,342 @@ body {
   max-width: 1140px;
   height: 100vh;
   @include h-center;
+  overflow: hidden;
+  position: relative;
 
   .left_section {
-    padding: 2rem;
-    background-color: $left-section-bg-color;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    position: relative;
+    width: 320px;
+    height: 100vh;
+    background-color: $main-bg-color;
+    position: absolute;
+    z-index: 1000;
+    transition: transform 0.3s ease-in-out;
+    transform: translateX(-100%);
 
-    .heading {
+    .height-limiter {
       display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 100%;
+      width: 100%;
+      padding: 1rem;
+      max-height: 600px;
 
-      .branding {
+      .heading {
         display: flex;
-        align-items: center;
+        position: relative;
 
-        img {
-          width: 50px;
-          height: 50px;
-          margin-right: 1rem;
+        .left-branding {
+          margin-top: 5rem;
+          display: none;
+          align-items: center;
+          justify-content: center;
+          width: 100%;
+
+          img {
+            @include h50w50-px;
+            margin-right: 1rem;
+          }
+
+          h1 {
+            font-size: 2rem;
+            line-height: 1.2;
+            text-transform: capitalize;
+          }
+
+          @include screen-size('md') {
+            display: flex;
+            margin-top: 0;
+            justify-content: flex-start;
+
+            h1 {
+              @include fontS_2-5rem;
+            }
+
+            img {
+              margin-right: 1rem;
+              margin-bottom: 0;
+            }
+          }
         }
+        .burger_menu_btn {
+          position: absolute;
+          @include h50w50-px;
+          right: -5rem;
+          top: -10px;
+          transition: right 0.3s ease-in-out;
+          background: url('http://www.flaticon.com/svg/static/icons/svg/1828/1828859.svg');
+          background-size: cover;
 
-        h1 {
-          font-size: 2.5rem;
-          line-height: 1.2;
-          text-transform: capitalize;
-        }
-      }
-      .burger_menu_btn {
-        position: absolute;
-        right: -4rem;
-        top: 2rem;
-
-        img {
-          width: 50px;
-          height: 50px;
+          &.close {
+            background: url('https://www.flaticon.com/svg/static/icons/svg/1828/1828747.svg');
+            background-size: 60%;
+            background-position: center;
+            background-repeat: no-repeat;
+          }
 
           &:hover {
             @include pointer;
           }
+
+          @include screen-size('md') {
+            right: -7rem;
+            top: 0;
+          }
         }
       }
-    }
-    .stats {
-      border: $left-section-border;
-      border-radius: 3px;
-      padding: 1rem;
+      .stats {
+        border: $left-section-border;
+        @include b-radius-3px;
+        padding: 1rem;
 
-      .score {
-        h2 {
-          font-size: 1.5rem;
-          text-align: center;
-          text-transform: capitalize;
-          margin-bottom: 1.5rem;
+        .score {
+          h2 {
+            font-size: 1.5rem;
+            text-align: center;
+            text-transform: capitalize;
+            margin-bottom: 1.5rem;
+          }
+
+          .first_score,
+          .second_score {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+
+            span:first-child {
+              margin-right: 1rem;
+              text-transform: capitalize;
+            }
+          }
         }
 
-        .first_score,
-        .second_score {
-          font-size: 1.2rem;
-          margin-bottom: 0.5rem;
+        .round_nbr {
+          border-top: $left-section-border;
+          font-size: 1.7rem;
+          margin-top: 1rem;
+          padding-top: 1rem;
+          text-align: center;
 
           span:first-child {
             margin-right: 1rem;
             text-transform: capitalize;
           }
         }
+
+        @include screen-size('md') {
+          margin: 0 1rem;
+        }
       }
+      .mark_selection {
+        border: $left-section-border;
+        @include b-radius-3px;
+        padding: 1.5rem;
+        position: relative;
 
-      .round_nbr {
-        border-top: $left-section-border;
-        font-size: 1.7rem;
-        margin-top: 1rem;
-        padding-top: 1rem;
-        text-align: center;
+        %background_and_padding {
+          padding: 0.5rem 0.8rem;
+          background-color: black;
+          border-left: solid $main-bg-color 2px;
 
-        span:first-child {
-          margin-right: 1rem;
+          &:hover {
+            @include pointer;
+          }
+        }
+
+        h2 {
+          font-size: 1.3rem;
           text-transform: capitalize;
+          position: absolute;
+          top: -14px;
+          left: 5px;
+          background-color: $main-bg-color;
+          padding: 0 5px;
+        }
+
+        .marks {
+          display: flex;
+          justify-content: space-around;
+
+          .x {
+            @extend %background_and_padding;
+
+            img {
+              filter: invert(100%);
+            }
+          }
+
+          .o {
+            @extend %background_and_padding;
+
+            img {
+              filter: invert(100%);
+            }
+          }
+
+          .selected {
+            border-left: solid 4px red;
+            border-top-left-radius: 2px;
+            border-bottom-left-radius: 2px;
+          }
+        }
+
+        @include screen-size('md') {
+          margin: 0 1rem;
         }
       }
     }
-    .mark_selection {
-      border: $left-section-border;
-      border-radius: 4px;
-      padding: 1.5rem;
-      position: relative;
 
-      %background_and_padding {
-        padding: 0.5rem;
-        background-color: black;
-        border-left: solid $left-section-bg-color 2px;
+    @include screen-size('sm') {
+      flex: 0 0 400px;
+    }
 
-        &:hover {
-          @include pointer;
-        }
-      }
-
-      h2 {
-        font-size: 1.3rem;
-        text-transform: capitalize;
-        position: absolute;
-        top: -14px;
-        left: 5px;
-        background-color: $left-section-bg-color;
-        padding: 0 5px;
-      }
-
-      .marks {
-        display: flex;
-        justify-content: space-around;
-
-        .x {
-          @extend %background_and_padding;
-
-          img {
-            filter: invert(100%);
-          }
-        }
-
-        .o {
-          @extend %background_and_padding;
-
-          img {
-            filter: invert(100%);
-          }
-        }
-
-        .selected {
-          border-left: solid 4px red;
-          border-top-left-radius: 2px;
-          border-bottom-left-radius: 2px;
-        }
-      }
+    @include screen-size('md') {
+      position: static;
     }
   }
   .right_section {
-    flex: 1;
+    flex: 1 1 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-    padding-top: 5rem;
+    align-items: center;
+    margin-top: 3.5rem;
+    transition: transform 0.3s ease-in-out;
+
+    .right-branding {
+      display: flex;
+      align-items: center;
+      @include mb-3rem;
+
+      img {
+        @include h50w50-px;
+        margin-right: 1rem;
+      }
+
+      h1 {
+        font-size: 2rem;
+        line-height: 1.2;
+        text-transform: capitalize;
+      }
+
+      @include screen-size('sm') {
+        margin-top: 0;
+        justify-content: flex-start;
+
+        h1 {
+          @include fontS_2-5rem;
+        }
+
+        img {
+          margin-right: 1rem;
+          margin-bottom: 0;
+        }
+      }
+
+      @include screen-size('md') {
+        display: none;
+      }
+    }
 
     .turns {
-      display: flex;
+      display: none;
+      flex-direction: column;
       justify-content: center;
+      align-items: stretch;
       font-size: 1.4rem;
       text-transform: capitalize;
+      padding: 0 3rem;
+      @include mb-3rem;
 
       .player {
         display: flex;
         align-items: center;
+        border: $left-section-border;
+        @include b-radius-3px;
+        padding: 0 0.5rem 0 0;
+        margin-bottom: 1rem;
 
         div {
           width: 30px;
           height: 30px;
           margin-right: 0.5rem;
-          background-color: $left-section-bg-color;
+          background-color: #d3d3d3;
+        }
 
-          &.active {
+        &.active {
+          border-color: dodgerblue;
+
+          div {
             background-color: dodgerblue;
           }
         }
 
         &:first-child {
-          margin-right: 2rem;
+          @include screen-size('sm') {
+            margin-right: 2rem;
+          }
         }
+
+        @include screen-size('sm') {
+          margin-bottom: 0;
+        }
+      }
+
+      @include screen-size('sm') {
+        flex-direction: row;
+        padding: 0;
+      }
+
+      @include screen-size('md') {
+        display: flex;
       }
     }
 
     .game_board {
       display: grid;
-      grid-template-columns: repeat(3, 100px);
-      grid-gap: 20px;
+      grid-template-columns: repeat(3, 90px);
+      grid-gap: 10px;
       justify-content: center;
 
       .board_column {
-        height: 100px;
-        background-color: burlywood;
+        height: 90px;
+        background-color: $main-bg-color;
+        @include b-radius-3px;
 
         &:hover {
           @include pointer;
+        }
+      }
+
+      @include screen-size('sm') {
+        grid-template-columns: repeat(3, 100px);
+
+        .board_column {
+          height: 100px;
         }
       }
     }
 
     .winner {
       font-size: 2rem;
+
       text-transform: capitalize;
       text-align: center;
+
+      @include screen-size('sm') {
+        margin-top: 3rem;
+      }
+    }
+
+    @include screen-size('sm') {
+      justify-content: center;
+      margin-top: 0;
+    }
+
+    @include screen-size('md') {
+      &.center {
+        transform: translateX(-200px);
+      }
     }
   }
 }
