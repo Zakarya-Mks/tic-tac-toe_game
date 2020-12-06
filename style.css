@@ -151,6 +151,50 @@ body {
   margin-right: auto;
   overflow: hidden;
   position: relative;
+  border: solid 1.5px #d3d3d3;
+}
+.main_container .game_start_options {
+  display: flex;
+  flex-direction: column;
+  border: solid 1.5px #d3d3d3;
+  align-self: center;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 2rem;
+  border-radius: 3px;
+}
+.main_container .game_start_options .card {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+}
+.main_container .game_start_options .card .two_players {
+  display: flex;
+}
+.main_container .game_start_options .card .two_players > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.main_container .game_start_options .card .player_vs_ai {
+  display: flex;
+}
+.main_container .game_start_options .card .player_vs_ai > * {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.main_container .game_start_options .controls {
+  display: flex;
+  justify-content: space-around;
+}
+.main_container .game_start_options .controls button {
+  padding: 0.5rem 3rem;
+}
+.main_container .game_start_options .controls button:hover {
+  cursor: pointer;
 }
 .main_container .left_section {
   width: 320px;
@@ -168,7 +212,7 @@ body {
   height: 100%;
   width: 100%;
   padding: 1rem;
-  max-height: 600px;
+  max-height: 900px;
 }
 .main_container .left_section .height-limiter .heading {
   display: flex;
@@ -274,9 +318,13 @@ body {
   position: relative;
 }
 .main_container .left_section .height-limiter .mark_selection .marks .o, .main_container .left_section .height-limiter .mark_selection .marks .x {
-  padding: 0.5rem 0.8rem;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  padding: 0.6rem;
   background-color: black;
-  border-left: solid #e5e5e5 2px;
+  border: solid #e5e5e5 2px;
+  border-radius: 3px;
 }
 .main_container .left_section .height-limiter .mark_selection .marks .o:hover, .main_container .left_section .height-limiter .mark_selection .marks .x:hover {
   cursor: pointer;
@@ -301,9 +349,7 @@ body {
   filter: invert(100%);
 }
 .main_container .left_section .height-limiter .mark_selection .marks .selected {
-  border-left: solid 4px red;
-  border-top-left-radius: 2px;
-  border-bottom-left-radius: 2px;
+  border: solid 2px red;
 }
 @media screen and (min-width: 768px) {
   .main_container .left_section .height-limiter .mark_selection {
@@ -436,6 +482,7 @@ body {
   }
 }
 .main_container .right_section .winner {
+  display: none;
   font-size: 2rem;
   text-transform: capitalize;
   text-align: center;
@@ -455,6 +502,32 @@ body {
   .main_container .right_section.center {
     transform: translateX(-200px);
   }
+}
+
+.js-o {
+  background: url("https://www.flaticon.com/svg/static/icons/svg/16/16894.svg"), #e5e5e5;
+  background-size: 60%;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.js-o.err {
+  background: url("https://www.flaticon.com/svg/static/icons/svg/16/16894.svg"), rgba(192, 41, 48, 0.8) !important;
+  background-size: 60% !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+}
+
+.js-x {
+  background: url("https://www.flaticon.com/svg/static/icons/svg/109/109602.svg"), #e5e5e5;
+  background-size: 60%;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.js-x.err {
+  background: url("https://www.flaticon.com/svg/static/icons/svg/109/109602.svg"), rgba(192, 41, 48, 0.8) !important;
+  background-size: 60% !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
 }
 
 /*# sourceMappingURL=style.css.map */

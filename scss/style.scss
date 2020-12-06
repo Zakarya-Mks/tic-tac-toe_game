@@ -19,6 +19,58 @@ body {
   @include h-center;
   overflow: hidden;
   position: relative;
+  border: $left-section-border;
+
+  .game_start_options {
+    display: flex;
+    flex-direction: column;
+    border: $left-section-border;
+    align-self: center;
+    @include h-center;
+    padding: 2rem;
+    @include b-radius-3px;
+
+    .card {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 1rem;
+
+      .two_players {
+        display: flex;
+
+        & > div {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+        }
+      }
+
+      .player_vs_ai {
+        display: flex;
+
+        & > * {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+        }
+      }
+    }
+
+    .controls {
+      display: flex;
+      justify-content: space-around;
+
+      button {
+        padding: 0.5rem 3rem;
+
+        &:hover {
+          @include pointer;
+        }
+      }
+    }
+  }
 
   .left_section {
     width: 320px;
@@ -36,7 +88,7 @@ body {
       height: 100%;
       width: 100%;
       padding: 1rem;
-      max-height: 600px;
+      max-height: 900px;
 
       .heading {
         display: flex;
@@ -150,9 +202,13 @@ body {
         position: relative;
 
         %background_and_padding {
-          padding: 0.5rem 0.8rem;
+          display: flex;
+          justify-content: center;
+          align-content: center;
+          padding: 0.6rem;
           background-color: black;
-          border-left: solid $main-bg-color 2px;
+          border: solid $main-bg-color 2px;
+          @include b-radius-3px;
 
           &:hover {
             @include pointer;
@@ -190,9 +246,7 @@ body {
           }
 
           .selected {
-            border-left: solid 4px red;
-            border-top-left-radius: 2px;
-            border-bottom-left-radius: 2px;
+            border: solid 2px red;
           }
         }
 
@@ -334,6 +388,7 @@ body {
     }
 
     .winner {
+      display: none;
       font-size: 2rem;
 
       text-transform: capitalize;
@@ -354,5 +409,38 @@ body {
         transform: translateX(-200px);
       }
     }
+  }
+}
+
+// javascript classes for editing board column background
+.js-o {
+  background: url('https://www.flaticon.com/svg/static/icons/svg/16/16894.svg'),
+    #e5e5e5;
+  background-size: 60%;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  &.err {
+    background: url('https://www.flaticon.com/svg/static/icons/svg/16/16894.svg'),
+      rgba(192, 41, 48, 0.8) !important;
+    background-size: 60% !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+  }
+}
+
+.js-x {
+  background: url('https://www.flaticon.com/svg/static/icons/svg/109/109602.svg'),
+    #e5e5e5;
+  background-size: 60%;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  &.err {
+    background: url('https://www.flaticon.com/svg/static/icons/svg/109/109602.svg'),
+      rgba(192, 41, 48, 0.8) !important;
+    background-size: 60% !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
   }
 }
