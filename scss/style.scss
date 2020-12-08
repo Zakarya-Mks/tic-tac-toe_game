@@ -15,59 +15,135 @@ body {
 .main_container {
   display: flex;
   max-width: 1140px;
-  height: 100vh;
+  min-height: 100vh;
   @include h-center;
-  overflow: hidden;
   position: relative;
   border: $left-section-border;
 
   .game_start_options {
+    align-self: center;
     display: flex;
     flex-direction: column;
     border: $left-section-border;
-    align-self: center;
     @include h-center;
-    padding: 2rem;
     @include b-radius-3px;
+    transition: transform 0.3s ease-in-out;
+    height: max-content;
+    max-width: 100vw;
+    padding: 1rem;
 
     .card {
       display: flex;
       flex-direction: column;
       margin-bottom: 1rem;
 
+      img {
+        width: 70px;
+        height: 70px;
+      }
+
       .two_players {
         display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1rem;
+        border: $left-section-border;
+        @include b-radius-3px;
+        position: relative;
+        transition: transform 0.2s ease-in-out;
+        padding: 1rem 0;
+
+        &:hover {
+          @include pointer;
+        }
+
+        input {
+          text-align: center;
+          font-weight: 700;
+          color: #5d5d5d;
+          text-transform: uppercase;
+          font-size: 1.2rem;
+          line-height: 1.5;
+          margin-top: 0;
+          margin-left: 1rem;
+          max-width: 50%;
+
+          &:focus {
+            outline: none;
+          }
+
+          @include screen-size('md') {
+            margin-top: 1rem;
+            margin-left: 0;
+            max-width: max-content;
+          }
+        }
 
         & > div {
           display: flex;
-          flex-direction: column;
           align-items: center;
           justify-content: center;
+          flex-direction: row;
+
+          @include screen-size('md') {
+            flex-direction: column;
+          }
+        }
+
+        &.selected {
+          transform: scale(1.03);
+          border: solid 2px rgba(0, 128, 128);
+        }
+
+        @include screen-size('md') {
+          flex-direction: row;
+          padding: 1rem;
         }
       }
 
       .player_vs_ai {
-        display: flex;
-
-        & > * {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-        }
+        @extend .two_players;
+        margin-bottom: 0;
       }
     }
 
     .controls {
       display: flex;
-      justify-content: space-around;
+      flex-direction: column;
 
       button {
         padding: 0.5rem 3rem;
+        font-size: 1.2rem;
+        line-height: 1.5;
+        text-transform: uppercase;
 
         &:hover {
           @include pointer;
         }
+
+        &:first-child {
+          margin-bottom: 10px;
+        }
+      }
+
+      @include screen-size('md') {
+        flex-direction: row;
+        justify-content: space-around;
+
+        button {
+          &:first-child {
+            margin-bottom: 0;
+          }
+        }
+      }
+    }
+
+    @include screen-size('md') {
+      padding: 2rem;
+
+      &.center {
+        transform: translateX(-200px);
       }
     }
   }
@@ -80,6 +156,7 @@ body {
     z-index: 1000;
     transition: transform 0.3s ease-in-out;
     transform: translateX(-100%);
+    display: none;
 
     .height-limiter {
       display: flex;
@@ -266,12 +343,12 @@ body {
   }
   .right_section {
     flex: 1 1 100%;
-    display: flex;
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
     margin-top: 3.5rem;
     transition: transform 0.3s ease-in-out;
+    display: none;
 
     .right-branding {
       display: flex;
@@ -330,15 +407,23 @@ body {
           width: 30px;
           height: 30px;
           margin-right: 0.5rem;
-          background-color: #d3d3d3;
+          background: url('https://www.flaticon.com/svg/static/icons/svg/1193/1193255.svg');
+          background-size: 90%;
+          background-position: center;
+          background-repeat: no-repeat;
+          transition: transform 0.2s ease-in-out;
+        }
+
+        &:nth-child(2) > div:first-child {
+          background: url('https://www.flaticon.com/svg/static/icons/svg/1193/1193286.svg');
+          background-size: 90%;
+          background-position: center;
+          background-repeat: no-repeat;
         }
 
         &.active {
-          border-color: dodgerblue;
-
-          div {
-            background-color: dodgerblue;
-          }
+          border-color: rgb(30, 143, 255);
+          transform: scale(1.2);
         }
 
         &:first-child {
@@ -409,6 +494,10 @@ body {
         transform: translateX(-200px);
       }
     }
+  }
+
+  @include screen-size('md') {
+    overflow: hidden;
   }
 }
 

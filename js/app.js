@@ -7,6 +7,16 @@ const DomElement = (function () {
   const mark_o = document.querySelector('.o');
   const board = document.querySelector('.game_board');
   const boardChildrenArr = Array.from(board.children);
+  const gameStartingDialog = document.querySelector('.game_start_options');
+  const GSD_twoPlayerOption = document.querySelector('.two_players');
+  const GSD_twoPlayerOption_inputs = document.querySelectorAll(
+    '.two_players input'
+  );
+  const GSD_playerVsComputerOption = document.querySelector('.player_vs_ai');
+  const GSD_playerVsComputerOption_inputs = document.querySelectorAll(
+    '.player_vs_ai input'
+  );
+  const startBtn = document.querySelector('#start');
 
   return {
     menuBtn,
@@ -17,15 +27,31 @@ const DomElement = (function () {
     mark_o,
     board,
     boardChildrenArr,
+    gameStartingDialog,
+    GSD_twoPlayerOption,
+    GSD_twoPlayerOption_inputs,
+    GSD_playerVsComputerOption,
+    GSD_playerVsComputerOption_inputs,
+    startBtn,
   };
 })();
 
 const Player = function (Name, Mark) {
   const name = Name;
   const mark = Mark;
+  const wonRound = [];
+  const lostRounds = [];
   let score = 0;
 
-  return {};
+  const getName = () => {
+    return name;
+  };
+
+  const changeMark = (newMark) => {
+    mark = newMark;
+  };
+
+  return { getName, changeMark };
 };
 
 const GameBoard = (function () {
@@ -69,7 +95,47 @@ const GameLogic = (function () {
   return {};
 })();
 
+const setUpNewGame = (gameType, player_1, player_2) => {
+  const setEnvironment = () => {
+    if (gameType === 'two_players') {
+      const player1 = new Player(player_1, 'x');
+      const player2 = new Player(player_2, 'o');
+    } else {
+      const player1 = new Player(player_1, 'x');
+    }
+  };
+
+  return { setEnvironment };
+};
+
 const DomEventListeners = (function () {
+  DomElement.gameStartingDialog.addEventListener('click', (e) => {
+    if (e.target.closest('.two_players')) {
+      DomElement.GSD_twoPlayerOption.classList.add('selected');
+      DomElement.GSD_playerVsComputerOption.classList.remove('selected');
+      DomElement.GSD_playerVsComputerOption_inputs.forEach(
+        (input) => (input.disabled = false)
+      );
+
+      DomElement.startBtn.disabled = false;
+    } else if (e.target.closest('.player_vs_ai')) {
+      DomElement.GSD_playerVsComputerOption.classList.add('selected');
+      DomElement.GSD_twoPlayerOption.classList.remove('selected');
+
+      DomElement.startBtn.disabled = false;
+    }
+
+    if (e.target.id === 'start') {
+      DomElement.gameStartingDialog.style.display = 'none';
+      DomElement.rightSection.style.display = 'flex';
+      DomElement.leftSection.style.display = 'flex';
+    } else if (e.target.id === 'exit') {
+      if (window.confirm('do you want to exit ?')) {
+        window.close();
+      }
+    }
+  });
+
   // show/hide the side menu and change the menu icon accordingly
   DomElement.menuBtn.addEventListener('click', (e) => {
     e.stopPropagation();
