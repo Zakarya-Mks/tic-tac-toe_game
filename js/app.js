@@ -57,33 +57,18 @@ const Player = function (Name, Mark) {
 const GameBoard = (function () {
   const _gameBoard = new Array(9);
 
-  const _render = () => {
-    DomElement.boardChildrenArr.forEach((element, index) => {
-      if (_gameBoard[index]) {
-        element.classList.add(`js-${_gameBoard[index]}`);
-      }
-    });
-  };
-
   const _checkForEmptySpot = (index) => {
     return !_gameBoard[index] ? true : false;
-  };
-
-  const _throwErr = (index) => {
-    const timer = setTimeout(() => {
-      DomElement.boardChildrenArr[index].classList.remove(`err`);
-    }, 200);
-
-    DomElement.boardChildrenArr[index].classList.add('err');
   };
 
   const add = (mark, index) => {
     if (index < 9 && ['x', 'o'].includes(mark)) {
       if (_checkForEmptySpot(index)) {
         _gameBoard[index] = mark;
-        _render();
+
+        uiController.rightSectionController.renderGameBoard(_gameBoard);
       } else {
-        _throwErr(index);
+        uiController.rightSectionController.gameBoardError(index);
       }
     }
   };
@@ -91,93 +76,163 @@ const GameBoard = (function () {
   return { add };
 })();
 
-const GameLogic = (function () {
-  return {};
-})();
+// const GameLogic = (function () {
+//   return {};
+// })();
 
-const setUpNewGame = (gameType, player_1, player_2) => {
-  const setEnvironment = () => {
-    if (gameType === 'two_players') {
+const setNewGame = (function () {
+  const setEnvironment = (gameType) => {
+    if (gameType === 'twoPlayers') {
+      const player_1 = DomElement.GSD_twoPlayerOption_inputs[0].value
+        ? DomElement.GSD_twoPlayerOption_inputs[0].value
+        : 'Player 1';
+      const player_2 = DomElement.GSD_twoPlayerOption_inputs[1].value
+        ? DomElement.GSD_twoPlayerOption_inputs[1].value
+        : 'Player 2';
+
       const player1 = new Player(player_1, 'x');
       const player2 = new Player(player_2, 'o');
-    } else {
+    } else if (gameType === 'onePlayer') {
+      const player_1 = DomElement.GSD_playerVsComputerOption_inputs[0].value
+        ? DomElement.GSD_playerVsComputerOption_inputs[0].value
+        : 'Player 1';
+
       const player1 = new Player(player_1, 'x');
+      console.log(player1.getName());
     }
   };
 
   return { setEnvironment };
-};
+})();
+
+const uiController = (function () {
+  let gameType = null;
+
+  const startingDialogController = {
+    toggleGameMode: function (target) {
+      if (target.closest('.two_players')) {
+        DomElement.GSD_twoPlayerOption.classList.add('selected');
+
+        // enable name input to edit name and disable the opposite option name input
+        DomElement.GSD_playerVsComputerOption.classList.remove('selected');
+        DomElement.GSD_twoPlayerOption_inputs.forEach((input) => {
+          input.disabled = false;
+        });
+        DomElement.GSD_playerVsComputerOption_inputs[0].disabled = true;
+
+        DomElement.startBtn.disabled = false;
+        gameType = 'twoPlayers';
+      } else if (target.closest('.player_vs_ai')) {
+        DomElement.GSD_playerVsComputerOption.classList.add('selected');
+        DomElement.GSD_twoPlayerOption.classList.remove('selected');
+
+        // enable name input to edit name and disable the opposite option name input
+        DomElement.GSD_playerVsComputerOption_inputs[0].disabled = false;
+        DomElement.GSD_twoPlayerOption_inputs.forEach((input) => {
+          input.disabled = true;
+        });
+
+        DomElement.startBtn.disabled = false;
+        gameType = 'onePlayer';
+      }
+    },
+    startOrExitGame: function (target) {
+      if (target.id === 'start') {
+        DomElement.gameStartingDialog.style.display = 'none';
+        DomElement.rightSection.style.display = 'flex';
+        DomElement.leftSection.style.display = 'flex';
+        setNewGame.setEnvironment(gameType);
+      } else if (target.id === 'exit') {
+        if (window.confirm('do you want to exit ?')) {
+          window.close();
+        }
+      }
+    },
+  };
+
+  const leftSectionController = {
+    showHideMenu: function () {
+      DomElement.menuBtn.classList.toggle('show');
+      if (DomElement.menuBtn.classList.contains('show')) {
+        DomElement.leftSection.style.transform = 'translateX(0)';
+        DomElement.menuBtn.style.right = '0';
+        DomElement.rightSection.classList.remove('center');
+        setTimeout(() => {
+          DomElement.menuBtn.classList.add('close');
+        }, 250);
+      } else {
+        DomElement.leftSection.style.transform = 'translateX(-100%)';
+        DomElement.menuBtn.style.right = '-5rem';
+        DomElement.rightSection.classList.add('center');
+        setTimeout(() => {
+          DomElement.menuBtn.classList.remove('close');
+        }, 250);
+      }
+    },
+    selectPlayerMark: function (target) {
+      if (target.closest('.x')) {
+        DomElement.mark_x.classList.add('selected');
+        DomElement.mark_o.classList.remove('selected');
+      } else if (target.closest('.o')) {
+        DomElement.mark_o.classList.add('selected');
+        DomElement.mark_x.classList.remove('selected');
+      }
+    },
+  };
+
+  const rightSectionController = {
+    renderGameBoard: function (dataArray) {
+      DomElement.boardChildrenArr.forEach((element, index) => {
+        if (dataArray[index]) {
+          element.classList.add(`js-${dataArray[index]}`);
+        }
+      });
+    },
+    gameBoardError: function (cellIndex) {
+      const timer = setTimeout(() => {
+        DomElement.boardChildrenArr[cellIndex].classList.remove(`err`);
+      }, 200);
+
+      DomElement.boardChildrenArr[cellIndex].classList.add('err');
+    },
+  };
+
+  return {
+    startingDialogController,
+    leftSectionController,
+    rightSectionController,
+  };
+})();
 
 const DomEventListeners = (function () {
   DomElement.gameStartingDialog.addEventListener('click', (e) => {
-    if (e.target.closest('.two_players')) {
-      DomElement.GSD_twoPlayerOption.classList.add('selected');
-      DomElement.GSD_playerVsComputerOption.classList.remove('selected');
-      DomElement.GSD_playerVsComputerOption_inputs.forEach(
-        (input) => (input.disabled = false)
-      );
-
-      DomElement.startBtn.disabled = false;
-    } else if (e.target.closest('.player_vs_ai')) {
-      DomElement.GSD_playerVsComputerOption.classList.add('selected');
-      DomElement.GSD_twoPlayerOption.classList.remove('selected');
-
-      DomElement.startBtn.disabled = false;
-    }
-
-    if (e.target.id === 'start') {
-      DomElement.gameStartingDialog.style.display = 'none';
-      DomElement.rightSection.style.display = 'flex';
-      DomElement.leftSection.style.display = 'flex';
-    } else if (e.target.id === 'exit') {
-      if (window.confirm('do you want to exit ?')) {
-        window.close();
-      }
+    e.stopPropagation();
+    if (e.target.closest('.card')) {
+      uiController.startingDialogController.toggleGameMode(e.target);
+    } else if (e.target.closest('.controls')) {
+      uiController.startingDialogController.startOrExitGame(e.target);
     }
   });
 
   // show/hide the side menu and change the menu icon accordingly
   DomElement.menuBtn.addEventListener('click', (e) => {
     e.stopPropagation();
-    DomElement.menuBtn.classList.toggle('show');
-
-    if (DomElement.menuBtn.classList.contains('show')) {
-      DomElement.leftSection.style.transform = 'translateX(0)';
-      DomElement.menuBtn.style.right = '0';
-      DomElement.rightSection.classList.remove('center');
-      setTimeout(() => {
-        DomElement.menuBtn.classList.add('close');
-      }, 250);
-    } else {
-      DomElement.leftSection.style.transform = 'translateX(-100%)';
-      DomElement.menuBtn.style.right = '-5rem';
-      DomElement.rightSection.classList.add('center');
-      setTimeout(() => {
-        DomElement.menuBtn.classList.remove('close');
-      }, 250);
-    }
+    uiController.leftSectionController.showHideMenu();
   });
 
   //select player marks in the side menu
   DomElement.marks.addEventListener('click', (e) => {
     e.stopPropagation();
-
-    if (e.target.closest('.x')) {
-      DomElement.mark_x.classList.add('selected');
-      DomElement.mark_o.classList.remove('selected');
-    } else if (e.target.closest('.o')) {
-      DomElement.mark_o.classList.add('selected');
-      DomElement.mark_x.classList.remove('selected');
-    }
+    uiController.leftSectionController.selectPlayerMark(e.target);
   });
 
   // fill board column with players mark when clicked
   DomElement.board.addEventListener('click', (e) => {
-    const mark = document.querySelector('.selected').classList[0];
-    const clicked_column = e.target.closest('.board_column');
-    const gameBoard = Array.from(DomElement.board.children);
+    if (e.target.closest('.board_column')) {
+      const mark = document.querySelector('.marks .selected').classList[0];
+      const clicked_column = e.target.closest('.board_column');
+      const gameBoard = Array.from(DomElement.board.children);
 
-    if (clicked_column) {
       GameBoard.add(mark, gameBoard.indexOf(clicked_column));
     }
   });

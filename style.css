@@ -193,7 +193,7 @@ body {
   text-align: center;
   font-weight: 700;
   color: #5d5d5d;
-  text-transform: uppercase;
+  text-transform: capitalize;
   font-size: 1.2rem;
   line-height: 1.5;
   margin-top: 0;
@@ -596,7 +596,7 @@ body {
   background-repeat: no-repeat;
 }
 .js-o.err {
-  background: url("https://www.flaticon.com/svg/static/icons/svg/16/16894.svg"), rgba(192, 41, 48, 0.8) !important;
+  background: url("https://www.flaticon.com/svg/static/icons/svg/16/16894.svg"), rgba(255, 0, 0, 0.7) !important;
   background-size: 60% !important;
   background-position: center !important;
   background-repeat: no-repeat !important;
@@ -609,7 +609,7 @@ body {
   background-repeat: no-repeat;
 }
 .js-x.err {
-  background: url("https://www.flaticon.com/svg/static/icons/svg/109/109602.svg"), rgba(192, 41, 48, 0.8) !important;
+  background: url("https://www.flaticon.com/svg/static/icons/svg/109/109602.svg"), rgba(255, 0, 0, 0.7) !important;
   background-size: 60% !important;
   background-position: center !important;
   background-repeat: no-repeat !important;
