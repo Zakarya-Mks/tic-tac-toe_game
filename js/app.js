@@ -9,14 +9,18 @@ const DomElement = (function () {
   const boardChildrenArr = Array.from(board.children);
   const gameStartingDialog = document.querySelector('.game_start_options');
   const GSD_twoPlayerOption = document.querySelector('.two_players');
+  const startBtn = document.querySelector('#start');
+  const leftSectionLog = document.querySelector('.score');
+  const leftSectionRound = document.querySelector('.round_nbr');
+  const turns = document.querySelector('.turns');
+
+  const GSD_playerVsComputerOption = document.querySelector('.player_vs_ai');
   const GSD_twoPlayerOption_inputs = document.querySelectorAll(
     '.two_players input'
   );
-  const GSD_playerVsComputerOption = document.querySelector('.player_vs_ai');
   const GSD_playerVsComputerOption_inputs = document.querySelectorAll(
     '.player_vs_ai input'
   );
-  const startBtn = document.querySelector('#start');
 
   return {
     menuBtn,
@@ -33,6 +37,9 @@ const DomElement = (function () {
     GSD_playerVsComputerOption,
     GSD_playerVsComputerOption_inputs,
     startBtn,
+    leftSectionLog,
+    turns,
+    leftSectionRound,
   };
 })();
 
@@ -76,33 +83,41 @@ const GameBoard = (function () {
   return { add };
 })();
 
-// const GameLogic = (function () {
-//   return {};
-// })();
-
-const setNewGame = (function () {
-  const setEnvironment = (gameType) => {
+const GameLogic = (function () {
+  let round = 1;
+  let player1, player2;
+  const setNewGame = function (gameType) {
     if (gameType === 'twoPlayers') {
       const player_1 = DomElement.GSD_twoPlayerOption_inputs[0].value
-        ? DomElement.GSD_twoPlayerOption_inputs[0].value
+        ? DomElement.GSD_twoPlayerOption_inputs[0].value.trim()
         : 'Player 1';
       const player_2 = DomElement.GSD_twoPlayerOption_inputs[1].value
-        ? DomElement.GSD_twoPlayerOption_inputs[1].value
+        ? DomElement.GSD_twoPlayerOption_inputs[1].value.trim()
         : 'Player 2';
 
-      const player1 = new Player(player_1, 'x');
-      const player2 = new Player(player_2, 'o');
+      player1 = new Player(player_1, 'x');
+      player2 = new Player(player_2, 'o');
     } else if (gameType === 'onePlayer') {
       const player_1 = DomElement.GSD_playerVsComputerOption_inputs[0].value
         ? DomElement.GSD_playerVsComputerOption_inputs[0].value
         : 'Player 1';
-
-      const player1 = new Player(player_1, 'x');
-      console.log(player1.getName());
+      const player_2 = 'computer';
+      player1 = new Player(player_1, 'x');
+      player2 = new Player(player_2, 'o');
     }
+
+    uiController.leftSectionController.updateLogPlayerNames(
+      player1.getName(),
+      player2.getName()
+    );
+    uiController.rightSectionController.turnsUpdate(
+      player1.getName(),
+      player2.getName()
+    );
+    uiController.leftSectionController.updateLogRound(round);
   };
 
-  return { setEnvironment };
+  return { setNewGame };
 })();
 
 const uiController = (function () {
@@ -141,7 +156,7 @@ const uiController = (function () {
         DomElement.gameStartingDialog.style.display = 'none';
         DomElement.rightSection.style.display = 'flex';
         DomElement.leftSection.style.display = 'flex';
-        setNewGame.setEnvironment(gameType);
+        GameLogic.setNewGame(gameType);
       } else if (target.id === 'exit') {
         if (window.confirm('do you want to exit ?')) {
           window.close();
@@ -178,6 +193,19 @@ const uiController = (function () {
         DomElement.mark_x.classList.remove('selected');
       }
     },
+    updateLogPlayerNames: function (player1, player2) {
+      let counter = 0;
+      [...DomElement.leftSectionLog.children].forEach((child, index) => {
+        if (child.nodeName === 'DIV') {
+          [...child.children][0].textContent =
+            [player1, player2][counter] + ':';
+          counter++;
+        }
+      });
+    },
+    updateLogRound: function (round) {
+      [...DomElement.leftSectionRound.children][1].textContent = round;
+    },
   };
 
   const rightSectionController = {
@@ -194,6 +222,20 @@ const uiController = (function () {
       }, 200);
 
       DomElement.boardChildrenArr[cellIndex].classList.add('err');
+    },
+    turnsUpdate: function (player1, player2) {
+      let counter = 0;
+      [...DomElement.turns.children].forEach((child, index) => {
+        [...child.children][1].textContent = [player1, player2][counter];
+        counter++;
+      });
+
+      // add computer icon
+      if (player2.toLowerCase() === 'computer') {
+        [...[...DomElement.turns.children][1].children][0].classList.add(
+          'computer'
+        );
+      }
     },
   };
 
