@@ -37,6 +37,20 @@ body {
       flex-direction: column;
       margin-bottom: 1rem;
 
+      .same-name-err {
+        display: none;
+        position: absolute;
+        left: 0;
+        top: -12px;
+        color: red;
+        font-size: 0.6rem;
+
+        @include screen-size('md') {
+          top: -15px;
+          font-size: 0.7rem;
+        }
+      }
+
       img {
         width: 70px;
         height: 70px;
@@ -126,6 +140,11 @@ body {
 
         &:first-child {
           margin-bottom: 10px;
+        }
+
+        &.shake-horizontal {
+          animation: shake-horizontal 0.8s
+            cubic-bezier(0.455, 0.03, 0.515, 0.955) both;
         }
       }
 
@@ -407,6 +426,7 @@ body {
         padding: 0 0.5rem 0 0;
         width: 50%;
         margin-bottom: 1rem;
+        transition: transform 0.2s ease-in-out;
 
         div {
           width: 30px;
@@ -416,7 +436,7 @@ body {
           background-size: 90%;
           background-position: center;
           background-repeat: no-repeat;
-          transition: transform 0.2s ease-in-out;
+          // transition: transform 0.2s ease-in-out;
         }
 
         &:nth-child(2) > div:first-child {
@@ -547,5 +567,34 @@ body {
     background-size: 60% !important;
     background-position: center !important;
     background-repeat: no-repeat !important;
+  }
+}
+
+@keyframes shake-horizontal {
+  0%,
+  100% {
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
+  }
+  10%,
+  30%,
+  50%,
+  70% {
+    -webkit-transform: translateX(-10px);
+    transform: translateX(-10px);
+  }
+  20%,
+  40%,
+  60% {
+    -webkit-transform: translateX(10px);
+    transform: translateX(10px);
+  }
+  80% {
+    -webkit-transform: translateX(8px);
+    transform: translateX(8px);
+  }
+  90% {
+    -webkit-transform: translateX(-8px);
+    transform: translateX(-8px);
   }
 }

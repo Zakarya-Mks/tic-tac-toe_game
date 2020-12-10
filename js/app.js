@@ -43,11 +43,13 @@ const DomElement = (function () {
   };
 })();
 
-const Player = function (Name, Mark) {
+const Player = function (Name, Mark, WillPlayNext) {
   const name = Name;
   const mark = Mark;
+  let willPlayNext = WillPlayNext;
   const wonRound = [];
   const lostRounds = [];
+
   let score = 0;
 
   const getName = () => {
@@ -58,7 +60,24 @@ const Player = function (Name, Mark) {
     mark = newMark;
   };
 
-  return { getName, changeMark };
+  const play = () => {
+    if (willPlayNext) {
+      uiController.leftSectionController.clearPlayerMark();
+      [...DomElement.turns.children].forEach((player) => {
+        //remove selection for all player and then add it to the one playing next
+        player.classList.remove('active');
+
+        if ([...player.children][1].textContent === name) {
+          player.classList.add('active');
+        }
+      });
+      DomElement[`mark_${mark}`].classList.add('selected');
+    }
+
+    willPlayNext = !willPlayNext;
+  };
+
+  return { getName, changeMark, play };
 };
 
 const GameBoard = (function () {
@@ -74,6 +93,8 @@ const GameBoard = (function () {
         _gameBoard[index] = mark;
 
         uiController.rightSectionController.renderGameBoard(_gameBoard);
+
+        GameLogic.nextPlayer();
       } else {
         uiController.rightSectionController.gameBoardError(index);
       }
@@ -95,29 +116,35 @@ const GameLogic = (function () {
         ? DomElement.GSD_twoPlayerOption_inputs[1].value.trim()
         : 'Player 2';
 
-      player1 = new Player(player_1, 'x');
-      player2 = new Player(player_2, 'o');
+      player1 = new Player(player_1, 'x', true);
+      player2 = new Player(player_2, 'o', false);
     } else if (gameType === 'onePlayer') {
       const player_1 = DomElement.GSD_playerVsComputerOption_inputs[0].value
         ? DomElement.GSD_playerVsComputerOption_inputs[0].value
         : 'Player 1';
       const player_2 = 'computer';
-      player1 = new Player(player_1, 'x');
-      player2 = new Player(player_2, 'o');
+      player1 = new Player(player_1, 'x', true);
+      player2 = new Player(player_2, 'o', false);
     }
 
     uiController.leftSectionController.updateLogPlayerNames(
       player1.getName(),
       player2.getName()
     );
-    uiController.rightSectionController.turnsUpdate(
+    uiController.rightSectionController.DisplayNameAndIcon(
       player1.getName(),
       player2.getName()
     );
     uiController.leftSectionController.updateLogRound(round);
+    nextPlayer();
   };
 
-  return { setNewGame };
+  const nextPlayer = function () {
+    player1.play();
+    player2.play();
+  };
+
+  return { setNewGame, nextPlayer };
 })();
 
 const uiController = (function () {
@@ -153,10 +180,22 @@ const uiController = (function () {
     },
     startOrExitGame: function (target) {
       if (target.id === 'start') {
-        DomElement.gameStartingDialog.style.display = 'none';
-        DomElement.rightSection.style.display = 'flex';
-        DomElement.leftSection.style.display = 'flex';
-        GameLogic.setNewGame(gameType);
+        if (
+          DomElement.GSD_twoPlayerOption_inputs[0].value !=
+          DomElement.GSD_twoPlayerOption_inputs[1].value
+        ) {
+          DomElement.gameStartingDialog.style.display = 'none';
+          DomElement.rightSection.style.display = 'flex';
+          DomElement.leftSection.style.display = 'flex';
+          GameLogic.setNewGame(gameType);
+        } else {
+          setTimeout(() => {
+            target.classList.remove('shake-horizontal');
+          }, 300);
+          document.querySelector('.same-name-err').style.display =
+            'inline-block';
+          target.classList.add('shake-horizontal');
+        }
       } else if (target.id === 'exit') {
         if (window.confirm('do you want to exit ?')) {
           window.close();
@@ -193,6 +232,10 @@ const uiController = (function () {
         DomElement.mark_x.classList.remove('selected');
       }
     },
+    clearPlayerMark: function () {
+      DomElement.mark_o.classList.remove('selected');
+      DomElement.mark_x.classList.remove('selected');
+    },
     updateLogPlayerNames: function (player1, player2) {
       let counter = 0;
       [...DomElement.leftSectionLog.children].forEach((child, index) => {
@@ -223,9 +266,9 @@ const uiController = (function () {
 
       DomElement.boardChildrenArr[cellIndex].classList.add('err');
     },
-    turnsUpdate: function (player1, player2) {
+    DisplayNameAndIcon: function (player1, player2) {
       let counter = 0;
-      [...DomElement.turns.children].forEach((child, index) => {
+      [...DomElement.turns.children].forEach((child) => {
         [...child.children][1].textContent = [player1, player2][counter];
         counter++;
       });
