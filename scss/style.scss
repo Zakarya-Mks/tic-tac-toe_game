@@ -309,10 +309,6 @@ body {
           background-color: black;
           border: solid $main-bg-color 2px;
           @include b-radius-3px;
-
-          &:hover {
-            @include pointer;
-          }
         }
 
         h2 {

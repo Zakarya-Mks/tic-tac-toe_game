@@ -56,10 +56,6 @@ const Player = function (Name, Mark, WillPlayNext) {
     return name;
   };
 
-  const changeMark = (newMark) => {
-    mark = newMark;
-  };
-
   const play = () => {
     if (willPlayNext) {
       uiController.leftSectionController.clearPlayerMark();
@@ -77,7 +73,7 @@ const Player = function (Name, Mark, WillPlayNext) {
     willPlayNext = !willPlayNext;
   };
 
-  return { getName, changeMark, play };
+  return { getName, play };
 };
 
 const GameBoard = (function () {
@@ -182,7 +178,8 @@ const uiController = (function () {
       if (target.id === 'start') {
         if (
           DomElement.GSD_twoPlayerOption_inputs[0].value !=
-          DomElement.GSD_twoPlayerOption_inputs[1].value
+            DomElement.GSD_twoPlayerOption_inputs[1].value ||
+          DomElement.GSD_twoPlayerOption_inputs[0].value == ''
         ) {
           DomElement.gameStartingDialog.style.display = 'none';
           DomElement.rightSection.style.display = 'flex';
@@ -221,15 +218,6 @@ const uiController = (function () {
         setTimeout(() => {
           DomElement.menuBtn.classList.remove('close');
         }, 250);
-      }
-    },
-    selectPlayerMark: function (target) {
-      if (target.closest('.x')) {
-        DomElement.mark_x.classList.add('selected');
-        DomElement.mark_o.classList.remove('selected');
-      } else if (target.closest('.o')) {
-        DomElement.mark_o.classList.add('selected');
-        DomElement.mark_x.classList.remove('selected');
       }
     },
     clearPlayerMark: function () {
@@ -303,12 +291,6 @@ const DomEventListeners = (function () {
   DomElement.menuBtn.addEventListener('click', (e) => {
     e.stopPropagation();
     uiController.leftSectionController.showHideMenu();
-  });
-
-  //select player marks in the side menu
-  DomElement.marks.addEventListener('click', (e) => {
-    e.stopPropagation();
-    uiController.leftSectionController.selectPlayerMark(e.target);
   });
 
   // fill board column with players mark when clicked

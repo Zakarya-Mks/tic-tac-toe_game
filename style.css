@@ -419,9 +419,6 @@ body {
   border: solid #e5e5e5 2px;
   border-radius: 3px;
 }
-.main_container .left_section .height-limiter .mark_selection .marks .o:hover, .main_container .left_section .height-limiter .mark_selection .marks .x:hover {
-  cursor: pointer;
-}
 .main_container .left_section .height-limiter .mark_selection h2 {
   font-size: 1.3rem;
   text-transform: capitalize;
