@@ -117,29 +117,6 @@
               <span>x</span>
             </div>
           </div>
-          <div class="mark_selection">
-            <h2>your mark</h2>
-            <div class="marks">
-              <div class="x">
-                <img
-                  width="30"
-                  height="30"
-                  src="https://www.flaticon.com/svg/static/icons/svg/109/109602.svg"
-                  alt="Letter x icon"
-                  title="Letter x icon"
-                />
-              </div>
-              <div class="o">
-                <img
-                  width="30"
-                  height="30"
-                  src="https://www.flaticon.com/svg/static/icons/svg/16/16894.svg"
-                  alt="Circle Ring icon"
-                  title="Circle Ring icon"
-                />
-              </div>
-            </div>
-          </div>
         </div>
       </section>
       <section class="right_section center">
@@ -173,12 +150,20 @@
           <div class="board_column"></div>
           <div class="board_column"></div>
         </div>
-        <div class="winner">
-          <h1>you win!</h1>
+      </section>
+
+      <section class="roundEnded">
+        <div class="card">
+          <h1 class="wonMsg">Player 1 WON the Game</h1>
+          <div>
+            <button id="newRound">new round</button>
+            <button id="newGame">new game</button>
+          </div>
         </div>
       </section>
     </div>
 
+    <script src="js/events.js"></script>
     <script src="js/app.js"></script>
   </body>
 </html>

@@ -14,11 +14,9 @@ body {
 
 .main_container {
   display: flex;
-  max-width: 1140px;
   min-height: 100vh;
   @include h-center;
   position: relative;
-  border: $left-section-border;
 
   .game_start_options {
     align-self: center;
@@ -65,7 +63,7 @@ body {
         border: $left-section-border;
         @include b-radius-3px;
         position: relative;
-        transition: transform 0.2s ease-in-out;
+        transition: box-shadow 0.2s ease-in-out;
         padding: 1rem 0;
 
         &:hover {
@@ -108,8 +106,9 @@ body {
         }
 
         &.selected {
-          transform: scale(1.03);
-          border: solid 2px rgba(0, 128, 128);
+          // transform: scale(1.03);
+          box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16),
+            0 3px 6px rgba(0, 0, 0, 0.23);
         }
 
         @include screen-size('md') {
@@ -227,12 +226,14 @@ body {
         }
         .burger_menu_btn {
           position: absolute;
-          @include h50w50-px;
-          right: -5rem;
+          width: 29px;
+          height: 27px;
+          right: -3.5rem;
           top: -10px;
           transition: right 0.3s ease-in-out;
-          background: url('http://www.flaticon.com/svg/static/icons/svg/1828/1828859.svg');
+          background: url('https://www.flaticon.com/svg/static/icons/svg/130/130918.svg');
           background-size: cover;
+          transform: rotateY(180deg);
 
           &.close {
             background: url('https://www.flaticon.com/svg/static/icons/svg/1828/1828747.svg');
@@ -246,8 +247,13 @@ body {
           }
 
           @include screen-size('md') {
-            right: -7rem;
+            right: -4.5rem;
             top: 0;
+
+            &.menu-btn-for-md {
+              right: -4.5rem !important;
+              top: 0 !important;
+            }
           }
         }
       }
@@ -288,61 +294,6 @@ body {
           span:first-child {
             margin-right: 1rem;
             text-transform: capitalize;
-          }
-        }
-
-        @include screen-size('md') {
-          margin: 0 1rem;
-        }
-      }
-      .mark_selection {
-        border: $left-section-border;
-        @include b-radius-3px;
-        padding: 1.5rem;
-        position: relative;
-
-        %background_and_padding {
-          display: flex;
-          justify-content: center;
-          align-content: center;
-          padding: 0.6rem;
-          background-color: black;
-          border: solid $main-bg-color 2px;
-          @include b-radius-3px;
-        }
-
-        h2 {
-          font-size: 1.3rem;
-          text-transform: capitalize;
-          position: absolute;
-          top: -14px;
-          left: 5px;
-          background-color: $main-bg-color;
-          padding: 0 5px;
-        }
-
-        .marks {
-          display: flex;
-          justify-content: space-around;
-
-          .x {
-            @extend %background_and_padding;
-
-            img {
-              filter: invert(100%);
-            }
-          }
-
-          .o {
-            @extend %background_and_padding;
-
-            img {
-              filter: invert(100%);
-            }
-          }
-
-          .selected {
-            border: solid 2px red;
           }
         }
 
@@ -504,18 +455,6 @@ body {
       }
     }
 
-    .winner {
-      display: none;
-      font-size: 2rem;
-
-      text-transform: capitalize;
-      text-align: center;
-
-      @include screen-size('sm') {
-        margin-top: 3rem;
-      }
-    }
-
     @include screen-size('sm') {
       justify-content: center;
       margin-top: 0;
@@ -524,6 +463,52 @@ body {
     @include screen-size('md') {
       &.center {
         transform: translateX(-200px);
+      }
+    }
+  }
+
+  .roundEnded {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    backdrop-filter: blur(3px);
+    display: none;
+    justify-content: center;
+    align-items: center;
+
+    .card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2.5rem 2rem;
+      @include b-radius-3px;
+      background-color: #e5e5e5;
+      animation: scale-in-center 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+
+      h1 {
+        font-size: 1.6rem;
+        margin-bottom: 1.5rem;
+      }
+
+      button {
+        border: solid 1px white;
+        font-size: 1.2rem;
+        line-height: 1.5;
+        padding: 0.3rem;
+        text-transform: capitalize;
+        @include b-radius-3px;
+        @include pointer;
+
+        &:focus {
+          outline: none;
+        }
+
+        &:first-child {
+          margin-right: 2rem;
+        }
       }
     }
   }
@@ -592,5 +577,18 @@ body {
   90% {
     -webkit-transform: translateX(-8px);
     transform: translateX(-8px);
+  }
+}
+
+@keyframes scale-in-center {
+  0% {
+    -webkit-transform: scale(0);
+    transform: scale(0);
+    opacity: 1;
+  }
+  100% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    opacity: 1;
   }
 }

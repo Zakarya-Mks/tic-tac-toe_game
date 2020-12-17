@@ -145,12 +145,10 @@ body {
 
 .main_container {
   display: flex;
-  max-width: 1140px;
   min-height: 100vh;
   margin-left: auto;
   margin-right: auto;
   position: relative;
-  border: solid 1.5px #d3d3d3;
 }
 .main_container .game_start_options {
   align-self: center;
@@ -197,7 +195,7 @@ body {
   border: solid 1.5px #d3d3d3;
   border-radius: 3px;
   position: relative;
-  transition: transform 0.2s ease-in-out;
+  transition: box-shadow 0.2s ease-in-out;
   padding: 1rem 0;
 }
 .main_container .game_start_options .card .two_players:hover, .main_container .game_start_options .card .player_vs_ai:hover {
@@ -238,8 +236,7 @@ body {
   }
 }
 .main_container .game_start_options .card .two_players.selected, .main_container .game_start_options .card .selected.player_vs_ai {
-  transform: scale(1.03);
-  border: solid 2px teal;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
 }
 @media screen and (min-width: 768px) {
   .main_container .game_start_options .card .two_players, .main_container .game_start_options .card .player_vs_ai {
@@ -342,13 +339,14 @@ body {
 }
 .main_container .left_section .height-limiter .heading .burger_menu_btn {
   position: absolute;
-  width: 50px;
-  height: 50px;
-  right: -5rem;
+  width: 29px;
+  height: 27px;
+  right: -3.5rem;
   top: -10px;
   transition: right 0.3s ease-in-out;
-  background: url("http://www.flaticon.com/svg/static/icons/svg/1828/1828859.svg");
+  background: url("https://www.flaticon.com/svg/static/icons/svg/130/130918.svg");
   background-size: cover;
+  transform: rotateY(180deg);
 }
 .main_container .left_section .height-limiter .heading .burger_menu_btn.close {
   background: url("https://www.flaticon.com/svg/static/icons/svg/1828/1828747.svg");
@@ -361,8 +359,12 @@ body {
 }
 @media screen and (min-width: 768px) {
   .main_container .left_section .height-limiter .heading .burger_menu_btn {
-    right: -7rem;
+    right: -4.5rem;
     top: 0;
+  }
+  .main_container .left_section .height-limiter .heading .burger_menu_btn.menu-btn-for-md {
+    right: -4.5rem !important;
+    top: 0 !important;
   }
 }
 .main_container .left_section .height-limiter .stats {
@@ -401,48 +403,6 @@ body {
 }
 @media screen and (min-width: 768px) {
   .main_container .left_section .height-limiter .stats {
-    margin: 0 1rem;
-  }
-}
-.main_container .left_section .height-limiter .mark_selection {
-  border: solid 1.5px #d3d3d3;
-  border-radius: 3px;
-  padding: 1.5rem;
-  position: relative;
-}
-.main_container .left_section .height-limiter .mark_selection .marks .o, .main_container .left_section .height-limiter .mark_selection .marks .x {
-  display: flex;
-  justify-content: center;
-  align-content: center;
-  padding: 0.6rem;
-  background-color: black;
-  border: solid #e5e5e5 2px;
-  border-radius: 3px;
-}
-.main_container .left_section .height-limiter .mark_selection h2 {
-  font-size: 1.3rem;
-  text-transform: capitalize;
-  position: absolute;
-  top: -14px;
-  left: 5px;
-  background-color: #e5e5e5;
-  padding: 0 5px;
-}
-.main_container .left_section .height-limiter .mark_selection .marks {
-  display: flex;
-  justify-content: space-around;
-}
-.main_container .left_section .height-limiter .mark_selection .marks .x img {
-  filter: invert(100%);
-}
-.main_container .left_section .height-limiter .mark_selection .marks .o img {
-  filter: invert(100%);
-}
-.main_container .left_section .height-limiter .mark_selection .marks .selected {
-  border: solid 2px red;
-}
-@media screen and (min-width: 768px) {
-  .main_container .left_section .height-limiter .mark_selection {
     margin: 0 1rem;
   }
 }
@@ -588,17 +548,6 @@ body {
     height: 100px;
   }
 }
-.main_container .right_section .winner {
-  display: none;
-  font-size: 2rem;
-  text-transform: capitalize;
-  text-align: center;
-}
-@media screen and (min-width: 576px) {
-  .main_container .right_section .winner {
-    margin-top: 3rem;
-  }
-}
 @media screen and (min-width: 576px) {
   .main_container .right_section {
     justify-content: center;
@@ -609,6 +558,46 @@ body {
   .main_container .right_section.center {
     transform: translateX(-200px);
   }
+}
+.main_container .roundEnded {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  backdrop-filter: blur(3px);
+  display: none;
+  justify-content: center;
+  align-items: center;
+}
+.main_container .roundEnded .card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2.5rem 2rem;
+  border-radius: 3px;
+  background-color: #e5e5e5;
+  animation: scale-in-center 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+}
+.main_container .roundEnded .card h1 {
+  font-size: 1.6rem;
+  margin-bottom: 1.5rem;
+}
+.main_container .roundEnded .card button {
+  border: solid 1px white;
+  font-size: 1.2rem;
+  line-height: 1.5;
+  padding: 0.3rem;
+  text-transform: capitalize;
+  border-radius: 3px;
+  cursor: pointer;
+}
+.main_container .roundEnded .card button:focus {
+  outline: none;
+}
+.main_container .roundEnded .card button:first-child {
+  margin-right: 2rem;
 }
 @media screen and (min-width: 768px) {
   .main_container {
@@ -662,6 +651,18 @@ body {
   90% {
     -webkit-transform: translateX(-8px);
     transform: translateX(-8px);
+  }
+}
+@keyframes scale-in-center {
+  0% {
+    -webkit-transform: scale(0);
+    transform: scale(0);
+    opacity: 1;
+  }
+  100% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    opacity: 1;
   }
 }
 
