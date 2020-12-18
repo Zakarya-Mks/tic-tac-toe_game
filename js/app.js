@@ -8,6 +8,7 @@ const DomElement = (function () {
   const GSD_twoPlayerOption = document.querySelector('.two_players');
   const startBtn = document.querySelector('#start');
   const leftSectionLog = document.querySelector('.score');
+  const leftSectionLogDraw = document.querySelector('.score .draw');
   const leftSectionRound = document.querySelector('.round_nbr');
   const turns = document.querySelector('.turns');
 
@@ -33,6 +34,7 @@ const DomElement = (function () {
     GSD_playerVsComputerOption_inputs,
     startBtn,
     leftSectionLog,
+    leftSectionLogDraw,
     turns,
     leftSectionRound,
     roundEnded_dialog,
@@ -167,6 +169,7 @@ const GameLogic = (function () {
   let player1, player2;
   let whoIsNextIndex = 0;
   let round = 1;
+  let draw = 0;
 
   const startNewGame = function (gameType) {
     if (gameType === 'twoPlayers') {
@@ -227,9 +230,11 @@ const GameLogic = (function () {
       }
 
       uiController.leftSectionController.updateScore(
-        player1.getScore()[0],
-        player2.getScore()[0]
+        player1.getScore(),
+        player2.getScore()
       );
+    } else {
+      DomElement.leftSectionLogDraw.textContent = ++draw;
     }
 
     round++;
@@ -320,23 +325,42 @@ const uiController = (function () {
       }
     },
     updateLogPlayerNames: function (player1, player2) {
-      let counter = 0;
-      [...DomElement.leftSectionLog.children].forEach((child, index) => {
-        if (child.nodeName === 'DIV') {
-          [...child.children][0].textContent =
-            [player1, player2][counter] + ':';
-          counter++;
+      [...DomElement.leftSectionLog.children].forEach((item, index) => {
+        if (['Player1', 'Player2'].includes(item.className)) {
+          switch (item.className) {
+            case 'Player1':
+              item.textContent = player1;
+              break;
+            case 'Player2':
+              item.textContent = player2;
+              break;
+            default:
+              break;
+          }
         }
       });
     },
     updateScore: function (player1Score, player2Score) {
-      let counter = 0;
-      [...DomElement.leftSectionLog.children].forEach((child, index) => {
-        if (child.nodeName === 'DIV') {
-          [...child.children][1].textContent = [player1Score, player2Score][
-            counter
-          ];
-          counter++;
+      [...DomElement.leftSectionLog.children].forEach((item) => {
+        if (
+          ['p1w', 'p1l', 'p1d', 'p2w', 'p2l', 'p2d'].includes(item.className)
+        ) {
+          switch (item.className) {
+            case 'p1w':
+              item.textContent = player1Score[0];
+              break;
+            case 'p1l':
+              item.textContent = player1Score[1];
+              break;
+            case 'p2w':
+              item.textContent = player2Score[0];
+              break;
+            case 'p2l':
+              item.textContent = player2Score[1];
+              break;
+            default:
+              break;
+          }
         }
       });
     },

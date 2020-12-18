@@ -286,17 +286,17 @@ body {
 .main_container .left_section {
   width: 320px;
   height: 100vh;
-  background-color: #e5e5e5;
+  background-color: #7f9cf5;
   position: absolute;
   z-index: 1000;
   transition: transform 0.3s ease-in-out;
   transform: translateX(-100%);
   display: none;
+  color: white;
 }
 .main_container .left_section .height-limiter {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   height: 100%;
   width: 100%;
   padding: 1rem;
@@ -345,11 +345,13 @@ body {
   top: -10px;
   transition: right 0.3s ease-in-out;
   background: url("https://www.flaticon.com/svg/static/icons/svg/130/130918.svg");
+  filter: invert(67%) sepia(8%) saturate(20000%) hue-rotate(195deg) brightness(95%) contrast(102%);
   background-size: cover;
   transform: rotateY(180deg);
 }
 .main_container .left_section .height-limiter .heading .burger_menu_btn.close {
   background: url("https://www.flaticon.com/svg/static/icons/svg/1828/1828747.svg");
+  filter: invert(100%);
   background-size: 60%;
   background-position: center;
   background-repeat: no-repeat;
@@ -368,34 +370,67 @@ body {
   }
 }
 .main_container .left_section .height-limiter .stats {
-  border: solid 1.5px #d3d3d3;
-  border-radius: 3px;
-  padding: 1rem;
+  padding: 1rem 0;
+  margin-top: 5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
-.main_container .left_section .height-limiter .stats .score h2 {
-  font-size: 1.5rem;
+.main_container .left_section .height-limiter .stats h2 {
+  border-bottom: dashed #678af3 1px;
+  border-radius: 3px;
+  padding: 5px;
+  width: 100%;
+  font-size: 1.8rem;
   text-align: center;
   text-transform: capitalize;
-  margin-bottom: 1.5rem;
+  margin-bottom: 3rem;
 }
-.main_container .left_section .height-limiter .stats .score .first_score,
-.main_container .left_section .height-limiter .stats .score .second_score {
-  font-size: 1.3rem;
-  margin-bottom: 0.5rem;
+.main_container .left_section .height-limiter .stats .score {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 0.6fr 1fr 1fr;
+  grid-gap: 1px;
+  font-size: 1.5rem;
+  grid-auto-flow: column;
+  background-color: black;
 }
-.main_container .left_section .height-limiter .stats .score .first_score span:first-child,
-.main_container .left_section .height-limiter .stats .score .second_score span:first-child {
-  display: inline-block;
-  min-width: 40%;
-  margin-right: 1rem;
+.main_container .left_section .height-limiter .stats .score span {
+  background-color: #7f9cf5;
+  width: 100%;
+  padding: 10px 0;
+}
+.main_container .left_section .height-limiter .stats .score span:first-child {
+  grid-column: 1/span 1;
+  grid-row: 1;
+}
+.main_container .left_section .height-limiter .stats .score span:nth-child(2) {
+  grid-column: 2/span 1;
+  grid-row: 1;
+  text-align: center;
   text-transform: capitalize;
+}
+.main_container .left_section .height-limiter .stats .score span:nth-child(3) {
+  grid-column: 3/span 1;
+  grid-row: 1;
+  text-align: center;
+  text-transform: capitalize;
+}
+.main_container .left_section .height-limiter .stats .score span:nth-last-child(-n+3) {
+  grid-column: 1/span 1;
+  text-transform: capitalize;
+}
+.main_container .left_section .height-limiter .stats .score span:nth-last-child(-n+9):not(:nth-last-child(-n+3)) {
+  text-align: center;
+}
+.main_container .left_section .height-limiter .stats .score span.draw {
+  grid-column: 2/span 2;
+  grid-row: 4;
 }
 .main_container .left_section .height-limiter .stats .round_nbr {
-  border-top: solid 1.5px #d3d3d3;
-  font-size: 1.7rem;
-  margin-top: 1rem;
-  padding-top: 1rem;
-  text-align: center;
+  font-size: 2.5rem;
+  position: absolute;
+  bottom: 50px;
 }
 .main_container .left_section .height-limiter .stats .round_nbr span:first-child {
   margin-right: 1rem;
@@ -403,7 +438,11 @@ body {
 }
 @media screen and (min-width: 768px) {
   .main_container .left_section .height-limiter .stats {
-    margin: 0 1rem;
+    grid-template-columns: 0.7fr 1fr 1fr;
+    margin: 5rem 10px 0 10px;
+  }
+  .main_container .left_section .height-limiter .stats span {
+    padding: 10px;
   }
 }
 @media screen and (min-width: 576px) {
@@ -419,7 +458,7 @@ body {
 .main_container .right_section {
   flex: 1 1 100%;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: center;
   align-items: center;
   margin-top: 3.5rem;
   transition: transform 0.3s ease-in-out;
@@ -500,7 +539,7 @@ body {
   background-repeat: no-repeat;
 }
 .main_container .right_section .turns .player.active {
-  border-color: #1e8fff;
+  border-color: #2d9cdb;
   transform: scale(1.1);
 }
 @media screen and (min-width: 576px) {
@@ -534,7 +573,7 @@ body {
 }
 .main_container .right_section .game_board .board_column {
   height: 90px;
-  background-color: #e5e5e5;
+  background-color: #e2e8f0;
   border-radius: 3px;
 }
 .main_container .right_section .game_board .board_column:hover {
@@ -576,7 +615,7 @@ body {
   align-items: center;
   padding: 2.5rem 2rem;
   border-radius: 3px;
-  background-color: #e5e5e5;
+  background-color: #e2e8f0;
   animation: scale-in-center 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
 }
@@ -606,7 +645,7 @@ body {
 }
 
 .js-o {
-  background: url("https://www.flaticon.com/svg/static/icons/svg/16/16894.svg"), #e5e5e5;
+  background: url("https://www.flaticon.com/svg/static/icons/svg/16/16894.svg"), #e2e8f0;
   background-size: 60%;
   background-position: center;
   background-repeat: no-repeat;
@@ -619,7 +658,7 @@ body {
 }
 
 .js-x {
-  background: url("https://www.flaticon.com/svg/static/icons/svg/109/109602.svg"), #e5e5e5;
+  background: url("https://www.flaticon.com/svg/static/icons/svg/109/109602.svg"), #e2e8f0;
   background-size: 60%;
   background-position: center;
   background-repeat: no-repeat;
