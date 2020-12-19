@@ -418,9 +418,7 @@ const uiController = (function () {
       [...[...DomElement.roundEnded_dialog.children][0].children].forEach(
         (item) => {
           if (item.tagName === 'H1') {
-            item.textContent = winner
-              ? `${winner.getName()} Won this Round`
-              : 'DRAW';
+            item.textContent = winner ? `${winner.getName()} Wins` : 'DRAW';
           }
         }
       );

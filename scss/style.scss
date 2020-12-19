@@ -268,7 +268,7 @@ body {
         align-items: center;
 
         h2 {
-          border-bottom: dashed darken($main-bg-color, 5%) 1px;
+          border: solid #5d5d5d 1px;
           @include b-radius-3px;
           padding: 5px;
           width: 100%;
@@ -285,7 +285,7 @@ body {
           grid-gap: 1px;
           font-size: 1.5rem;
           grid-auto-flow: column;
-          background-color: black;
+          background-color: #5d5d5d;
 
           span {
             background-color: #7f9cf5;
@@ -526,24 +526,39 @@ body {
       display: flex;
       flex-direction: column;
       align-items: center;
+      height: 150px;
+      min-width: 300px;
       padding: 2.5rem 2rem;
       @include b-radius-3px;
-      background-color: #e2e8f0;
+      background-color: #fff;
       animation: scale-in-center 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
-      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.16), 0 0 15px rgba(0, 0, 0, 0.23);
+      position: relative;
+
+      div {
+        width: 100%;
+        display: flex;
+        justify-content: flex-end;
+        position: absolute;
+        bottom: 1rem;
+        right: 1.1rem;
+      }
 
       h1 {
-        font-size: 1.6rem;
-        margin-bottom: 1.5rem;
+        font-size: 1.4rem;
+        margin-bottom: 3rem;
+        font-weight: 500;
       }
 
       button {
-        border: solid 1px white;
-        font-size: 1.2rem;
-        line-height: 1.5;
-        padding: 0.3rem;
+        // border: solid 1px #5d5d5d;
+        border: none;
+        border-bottom: solid 1px #5d5d5d;
+        background: transparent;
+        font-size: 1rem;
+        padding: 0.2rem;
         text-transform: capitalize;
-        @include b-radius-3px;
+        // @include b-radius-3px;
         @include pointer;
 
         &:focus {
@@ -551,7 +566,15 @@ body {
         }
 
         &:first-child {
-          margin-right: 2rem;
+          margin-right: 0.5rem;
+        }
+      }
+
+      @include screen-size('sm') {
+        min-width: 345px;
+
+        h1 {
+          font-size: 1.6rem;
         }
       }
     }
