@@ -598,7 +598,7 @@ body {
     transform: translateX(-200px);
   }
 }
-.main_container .roundEnded {
+.main_container .right_section .roundEnded {
   position: absolute;
   top: 0;
   left: 0;
@@ -609,7 +609,7 @@ body {
   justify-content: center;
   align-items: center;
 }
-.main_container .roundEnded .card {
+.main_container .right_section .roundEnded .card {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -622,7 +622,7 @@ body {
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.16), 0 0 15px rgba(0, 0, 0, 0.23);
   position: relative;
 }
-.main_container .roundEnded .card div {
+.main_container .right_section .roundEnded .card div {
   width: 100%;
   display: flex;
   justify-content: flex-end;
@@ -630,12 +630,12 @@ body {
   bottom: 1rem;
   right: 1.1rem;
 }
-.main_container .roundEnded .card h1 {
+.main_container .right_section .roundEnded .card h1 {
   font-size: 1.4rem;
   margin-bottom: 3rem;
   font-weight: 500;
 }
-.main_container .roundEnded .card button {
+.main_container .right_section .roundEnded .card button {
   border: none;
   border-bottom: solid 1px #5d5d5d;
   background: transparent;
@@ -644,17 +644,17 @@ body {
   text-transform: capitalize;
   cursor: pointer;
 }
-.main_container .roundEnded .card button:focus {
+.main_container .right_section .roundEnded .card button:focus {
   outline: none;
 }
-.main_container .roundEnded .card button:first-child {
+.main_container .right_section .roundEnded .card button:first-child {
   margin-right: 0.5rem;
 }
 @media screen and (min-width: 576px) {
-  .main_container .roundEnded .card {
+  .main_container .right_section .roundEnded .card {
     min-width: 345px;
   }
-  .main_container .roundEnded .card h1 {
+  .main_container .right_section .roundEnded .card h1 {
     font-size: 1.6rem;
   }
 }

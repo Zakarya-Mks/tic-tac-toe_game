@@ -509,72 +509,74 @@ body {
         transform: translateX(-200px);
       }
     }
-  }
 
-  .roundEnded {
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    backdrop-filter: blur(3px);
-    display: none;
-    justify-content: center;
-    align-items: center;
-
-    .card {
-      display: flex;
-      flex-direction: column;
+    // round ended dialog
+    .roundEnded {
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      backdrop-filter: blur(3px);
+      display: none;
+      justify-content: center;
       align-items: center;
-      height: 150px;
-      min-width: 300px;
-      padding: 2.5rem 2rem;
-      @include b-radius-3px;
-      background-color: #fff;
-      animation: scale-in-center 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
-      box-shadow: 0 0 15px rgba(0, 0, 0, 0.16), 0 0 15px rgba(0, 0, 0, 0.23);
-      position: relative;
 
-      div {
-        width: 100%;
+      .card {
         display: flex;
-        justify-content: flex-end;
-        position: absolute;
-        bottom: 1rem;
-        right: 1.1rem;
-      }
+        flex-direction: column;
+        align-items: center;
+        height: 150px;
+        min-width: 300px;
+        padding: 2.5rem 2rem;
+        @include b-radius-3px;
+        background-color: #fff;
+        animation: scale-in-center 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)
+          both;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.16), 0 0 15px rgba(0, 0, 0, 0.23);
+        position: relative;
 
-      h1 {
-        font-size: 1.4rem;
-        margin-bottom: 3rem;
-        font-weight: 500;
-      }
-
-      button {
-        // border: solid 1px #5d5d5d;
-        border: none;
-        border-bottom: solid 1px #5d5d5d;
-        background: transparent;
-        font-size: 1rem;
-        padding: 0.2rem;
-        text-transform: capitalize;
-        // @include b-radius-3px;
-        @include pointer;
-
-        &:focus {
-          outline: none;
+        div {
+          width: 100%;
+          display: flex;
+          justify-content: flex-end;
+          position: absolute;
+          bottom: 1rem;
+          right: 1.1rem;
         }
-
-        &:first-child {
-          margin-right: 0.5rem;
-        }
-      }
-
-      @include screen-size('sm') {
-        min-width: 345px;
 
         h1 {
-          font-size: 1.6rem;
+          font-size: 1.4rem;
+          margin-bottom: 3rem;
+          font-weight: 500;
+        }
+
+        button {
+          // border: solid 1px #5d5d5d;
+          border: none;
+          border-bottom: solid 1px #5d5d5d;
+          background: transparent;
+          font-size: 1rem;
+          padding: 0.2rem;
+          text-transform: capitalize;
+          // @include b-radius-3px;
+          @include pointer;
+
+          &:focus {
+            outline: none;
+          }
+
+          &:first-child {
+            margin-right: 0.5rem;
+          }
+        }
+
+        @include screen-size('sm') {
+          min-width: 345px;
+
+          h1 {
+            font-size: 1.6rem;
+          }
         }
       }
     }

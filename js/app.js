@@ -76,11 +76,94 @@ const Player = function (Name, Mark) {
   return { getName, getMark, getScore, select, won };
 };
 
+const computer = (function () {
+  let checkForWinner, isMovesLeft;
+
+  function getExternalFunction(_checkForWinner, _isMovesLeft) {
+    checkForWinner = _checkForWinner;
+    isMovesLeft = _isMovesLeft;
+  }
+
+  function evaluate() {
+    let winner = checkForWinner();
+    return winner == 'x' ? 10 : winner == 'o' ? -10 : 0;
+  }
+
+  function minMax(board, depth, isMax) {
+    let score = evaluate();
+
+    if (score == 10) return score;
+
+    if (score == -10) return score;
+
+    if (!isMovesLeft()) return 0;
+
+    if (isMax) {
+      let best = -1000;
+
+      for (let i = 0; i < board.length; i++) {
+        if (isMovesLeft(i)) {
+          board[i] = 'x';
+
+          best = Math.max(best, minMax(board, depth + 1, !isMax));
+
+          board[i] = undefined;
+        }
+      }
+
+      return best;
+    } else {
+      let best = 1000;
+
+      for (let i = 0; i < board.length; i++) {
+        if (isMovesLeft(i)) {
+          board[i] = 'o';
+
+          best = Math.min(best, minMax(board, depth + 1, !isMax));
+
+          board[i] = undefined;
+        }
+      }
+      return best;
+    }
+  }
+
+  function findBestMove(board) {
+    let bestVal = -1000;
+    let moveIndex = -1;
+
+    for (let i = 0; i < board.length; i++) {
+      if (isMovesLeft(i)) {
+        board[i] = 'x';
+        let moveVal = minMax(board, 0, false);
+        board[i] = undefined;
+
+        if (moveVal > bestVal) {
+          moveIndex = i;
+          bestVal = moveVal;
+        }
+      }
+    }
+    return moveIndex;
+  }
+
+  return { findBestMove, getExternalFunction };
+})();
+
 const GameBoard = (function () {
   const _gameBoard = new Array(9);
 
   const _checkIfCellEmpty = (index) => {
-    return !_gameBoard[index] ? true : false;
+    if (index) {
+      return !_gameBoard[index] ? true : false;
+    } else {
+      // return true if a empty cell is found
+      for (let i = 0; i < _gameBoard.length; i++) {
+        if (!_gameBoard[i]) {
+          return true;
+        }
+      }
+    }
   };
 
   const _checkForRemainingEmptyCells = () => {
@@ -129,7 +212,8 @@ const GameBoard = (function () {
 
         if (x_result || o_result) {
           _endTheGame();
-          return true;
+          // return true;
+          return x_result ? 'x' : 'o';
         }
       }
     }
@@ -161,6 +245,8 @@ const GameBoard = (function () {
       _checkForRemainingEmptyCells();
     }
   };
+
+  computer.getExternalFunction(_checkForWinner, _checkIfCellEmpty);
 
   return { fillCell, resetBoard };
 })();
