@@ -76,7 +76,7 @@ const Player = function (Name, Mark) {
   return { getName, getMark, getScore, select, won };
 };
 
-const computer = (function () {
+const computerAI = (function () {
   let checkForWinner, isMovesLeft;
 
   function getExternalFunction(_checkForWinner, _isMovesLeft) {
@@ -84,29 +84,27 @@ const computer = (function () {
     isMovesLeft = _isMovesLeft;
   }
 
-  function evaluate() {
+  function _evaluate() {
     let winner = checkForWinner();
-    return winner == 'x' ? 10 : winner == 'o' ? -10 : 0;
+    return winner == 'x' ? -10 : winner == 'o' ? 10 : 0;
   }
 
-  function minMax(board, depth, isMax) {
-    let score = evaluate();
+  function _minMax(board, depth, isMax) {
+    let score = _evaluate();
 
     if (score == 10) return score;
 
     if (score == -10) return score;
 
-    if (!isMovesLeft()) return 0;
+    if (!isMovesLeft()) return 0; //TODO remove this as the draw calculation is on another object
 
     if (isMax) {
       let best = -1000;
 
       for (let i = 0; i < board.length; i++) {
         if (isMovesLeft(i)) {
-          board[i] = 'x';
-
-          best = Math.max(best, minMax(board, depth + 1, !isMax));
-
+          board[i] = 'o';
+          best = Math.max(best, _minMax(board, depth + 1, !isMax));
           board[i] = undefined;
         }
       }
@@ -117,13 +115,12 @@ const computer = (function () {
 
       for (let i = 0; i < board.length; i++) {
         if (isMovesLeft(i)) {
-          board[i] = 'o';
-
-          best = Math.min(best, minMax(board, depth + 1, !isMax));
-
+          board[i] = 'x';
+          best = Math.min(best, _minMax(board, depth + 1, !isMax));
           board[i] = undefined;
         }
       }
+
       return best;
     }
   }
@@ -134,8 +131,8 @@ const computer = (function () {
 
     for (let i = 0; i < board.length; i++) {
       if (isMovesLeft(i)) {
-        board[i] = 'x';
-        let moveVal = minMax(board, 0, false);
+        board[i] = 'o';
+        let moveVal = _minMax(board, 0, false);
         board[i] = undefined;
 
         if (moveVal > bestVal) {
@@ -144,6 +141,7 @@ const computer = (function () {
         }
       }
     }
+
     return moveIndex;
   }
 
@@ -151,10 +149,10 @@ const computer = (function () {
 })();
 
 const GameBoard = (function () {
-  const _gameBoard = new Array(9);
+  let _gameBoard = new Array(9);
 
   const _checkIfCellEmpty = (index) => {
-    if (index) {
+    if (index || index == 0) {
       return !_gameBoard[index] ? true : false;
     } else {
       // return true if a empty cell is found
@@ -169,6 +167,7 @@ const GameBoard = (function () {
   const _checkForRemainingEmptyCells = () => {
     if (!_gameBoard.includes(undefined)) {
       _endTheGame();
+      // the round is a DRAW
       GameLogic.endRound(undefined);
     }
   };
@@ -211,8 +210,7 @@ const GameBoard = (function () {
         let o_result = formula.every((item) => o_arr.includes(item));
 
         if (x_result || o_result) {
-          _endTheGame();
-          // return true;
+          // _endTheGame();
           return x_result ? 'x' : 'o';
         }
       }
@@ -220,24 +218,25 @@ const GameBoard = (function () {
   };
 
   const resetBoard = function () {
-    _gameBoard.length = 0;
-    _gameBoard.length = 9;
+    _gameBoard = new Array(9);
     uiController.rightSectionController.cleanGameBoard();
   };
 
   const fillCell = (index) => {
-    let currPlayer;
+    const currPlayer = GameLogic.currentPlayer();
+    const playerMark = currPlayer.getMark();
 
     if (_checkIfCellEmpty(index)) {
-      currPlayer = GameLogic.whoIsNext();
-      const playerMark = currPlayer.getMark();
-
       _gameBoard[index] = playerMark;
-
       uiController.rightSectionController.renderGameBoard(_gameBoard);
+
+      //select next player
+      GameLogic.whoIsNext();
     } else {
       uiController.rightSectionController.gameBoardError(index);
     }
+
+    //   _gameBoard[computerAI.findBestMove(_gameBoard)] = playerMark;
 
     if (_checkForWinner()) {
       GameLogic.endRound(currPlayer);
@@ -246,9 +245,27 @@ const GameBoard = (function () {
     }
   };
 
-  computer.getExternalFunction(_checkForWinner, _checkIfCellEmpty);
+  const computerFillCell = function (currPlayer) {
+    DomElement.board.removeEventListener('click', DomListener.gridCellClick);
 
-  return { fillCell, resetBoard };
+    setTimeout(() => {
+      _gameBoard[computerAI.findBestMove(_gameBoard)] = currPlayer.getMark();
+      uiController.rightSectionController.renderGameBoard(_gameBoard);
+
+      if (_checkForWinner()) {
+        GameLogic.endRound(currPlayer);
+      } else {
+        _checkForRemainingEmptyCells();
+      }
+
+      GameLogic.whoIsNext();
+      DomElement.board.addEventListener('click', DomListener.gridCellClick);
+    }, 300);
+  };
+
+  computerAI.getExternalFunction(_checkForWinner, _checkIfCellEmpty);
+
+  return { fillCell, resetBoard, computerFillCell };
 })();
 
 const GameLogic = (function () {
@@ -289,11 +306,18 @@ const GameLogic = (function () {
     player1.select();
   };
 
-  const whoIsNext = function () {
+  const currentPlayer = function () {
     const player = [player1, player2][whoIsNextIndex];
+    return player;
+  };
+
+  const whoIsNext = function () {
     whoIsNextIndex = whoIsNextIndex === 0 ? 1 : 0;
     [player1, player2][whoIsNextIndex].select();
-    return player;
+
+    if (currentPlayer().getName().toLowerCase() == 'computer') {
+      GameBoard.computerFillCell(currentPlayer());
+    }
   };
 
   const newRound = function () {
@@ -328,7 +352,7 @@ const GameLogic = (function () {
     uiController.rightSectionController.displayRoundEndDialog(winner);
   };
 
-  return { startNewGame, endRound, newRound, whoIsNext };
+  return { startNewGame, endRound, newRound, whoIsNext, currentPlayer };
 })();
 
 const uiController = (function () {
@@ -365,8 +389,12 @@ const uiController = (function () {
     startOrExitGame: function (target) {
       if (target.id === 'start') {
         if (
-          DomElement.GSD_twoPlayerOption_inputs[0].value !=
-            DomElement.GSD_twoPlayerOption_inputs[1].value ||
+          (DomElement.GSD_twoPlayerOption_inputs[0].value !=
+            DomElement.GSD_twoPlayerOption_inputs[1].value &&
+            DomElement.GSD_twoPlayerOption_inputs[0].value.toLowerCase() !=
+              'computer' &&
+            DomElement.GSD_twoPlayerOption_inputs[1].value.toLowerCase() !=
+              'computer') ||
           DomElement.GSD_twoPlayerOption_inputs[0].value == ''
         ) {
           DomElement.gameStartingDialog.style.display = 'none';
@@ -534,6 +562,7 @@ const DomListener = (function () {
   };
 
   const gridCellClick = (e) => {
+    console.log('im here');
     if (e.target.closest('.board_column')) {
       e.stopPropagation();
       const clicked_column = e.target.closest('.board_column');
