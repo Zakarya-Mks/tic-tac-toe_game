@@ -59,7 +59,7 @@ body {
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        margin-bottom: 1rem;
+        // margin-bottom: 1rem;
         border: $left-section-border;
         @include b-radius-3px;
         position: relative;
@@ -119,7 +119,7 @@ body {
 
       .player_vs_ai {
         @extend .two_players;
-        margin-bottom: 0;
+        margin-bottom: 1rem;
       }
     }
 
