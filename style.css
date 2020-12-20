@@ -194,7 +194,7 @@ body {
   border: solid 1.5px #d3d3d3;
   border-radius: 3px;
   position: relative;
-  transition: box-shadow 0.2s ease-in-out;
+  transition: box-shadow 0.2s ease-in-out, transform 0.2s ease-in-out;
   padding: 1rem 0;
 }
 .main_container .game_start_options .card .two_players:hover, .main_container .game_start_options .card .player_vs_ai:hover {
@@ -235,7 +235,8 @@ body {
   }
 }
 .main_container .game_start_options .card .two_players.selected, .main_container .game_start_options .card .selected.player_vs_ai {
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  transform: scale(1.012);
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.16), 0 0 15px rgba(0, 0, 0, 0.23);
 }
 @media screen and (min-width: 768px) {
   .main_container .game_start_options .card .two_players, .main_container .game_start_options .card .player_vs_ai {
@@ -343,13 +344,13 @@ body {
   right: -3.5rem;
   top: -10px;
   transition: right 0.3s ease-in-out;
-  background: url("https://www.flaticon.com/svg/static/icons/svg/130/130918.svg");
+  background: url("./img/130918.svg");
   filter: invert(67%) sepia(8%) saturate(20000%) hue-rotate(195deg) brightness(95%) contrast(102%);
   background-size: cover;
   transform: rotateY(180deg);
 }
 .main_container .left_section .height-limiter .heading .burger_menu_btn.close {
-  background: url("https://www.flaticon.com/svg/static/icons/svg/1828/1828747.svg");
+  background: url("./img/1828747.svg");
   filter: invert(100%);
   background-size: 60%;
   background-position: center;
@@ -521,19 +522,19 @@ body {
   width: 30px;
   height: 30px;
   margin-right: 0.5rem;
-  background: url("https://www.flaticon.com/svg/static/icons/svg/1193/1193255.svg");
+  background: url("./img/1193255.svg");
   background-size: 90%;
   background-position: center;
   background-repeat: no-repeat;
 }
 .main_container .right_section .turns .player:nth-child(2) > div:first-child {
-  background: url("https://www.flaticon.com/svg/static/icons/svg/1193/1193286.svg");
+  background: url("./img/1193286.svg");
   background-size: 90%;
   background-position: center;
   background-repeat: no-repeat;
 }
 .main_container .right_section .turns .player:nth-child(2) > div:first-child.computer {
-  background: url("https://www.flaticon.com/svg/static/icons/svg/3398/3398865.svg");
+  background: url("./img/3398865.svg");
   background-size: 90%;
   background-position: center;
   background-repeat: no-repeat;
@@ -665,26 +666,26 @@ body {
 }
 
 .js-o {
-  background: url("https://www.flaticon.com/svg/static/icons/svg/16/16894.svg"), #e2e8f0;
+  background: url("./img/16894.svg"), #e2e8f0;
   background-size: 60%;
   background-position: center;
   background-repeat: no-repeat;
 }
 .js-o.err {
-  background: url("https://www.flaticon.com/svg/static/icons/svg/16/16894.svg"), rgba(255, 0, 0, 0.7) !important;
+  background: url("./img/16894.svg"), rgba(255, 0, 0, 0.7) !important;
   background-size: 60% !important;
   background-position: center !important;
   background-repeat: no-repeat !important;
 }
 
 .js-x {
-  background: url("https://www.flaticon.com/svg/static/icons/svg/109/109602.svg"), #e2e8f0;
+  background: url("./img/109602.svg"), #e2e8f0;
   background-size: 60%;
   background-position: center;
   background-repeat: no-repeat;
 }
 .js-x.err {
-  background: url("https://www.flaticon.com/svg/static/icons/svg/109/109602.svg"), rgba(255, 0, 0, 0.7) !important;
+  background: url("./img/109602.svg"), rgba(255, 0, 0, 0.7) !important;
   background-size: 60% !important;
   background-position: center !important;
   background-repeat: no-repeat !important;

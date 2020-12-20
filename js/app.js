@@ -96,7 +96,7 @@ const computerAI = (function () {
 
     if (score == -10) return score;
 
-    if (!isMovesLeft()) return 0; //TODO remove this as the draw calculation is on another object
+    if (!isMovesLeft()) return 0;
 
     if (isMax) {
       let best = -1000;
@@ -155,19 +155,14 @@ const GameBoard = (function () {
     if (index || index == 0) {
       return !_gameBoard[index] ? true : false;
     } else {
-      // return true if a empty cell is found
-      for (let i = 0; i < _gameBoard.length; i++) {
-        if (!_gameBoard[i]) {
-          return true;
-        }
-      }
+      return _gameBoard.includes(undefined);
     }
   };
 
   const _checkForRemainingEmptyCells = () => {
     if (!_gameBoard.includes(undefined)) {
+      // if the array is dull the round is a DRAW, undefined mean no one wins
       _endTheGame();
-      // the round is a DRAW
       GameLogic.endRound(undefined);
     }
   };
@@ -210,7 +205,6 @@ const GameBoard = (function () {
         let o_result = formula.every((item) => o_arr.includes(item));
 
         if (x_result || o_result) {
-          // _endTheGame();
           return x_result ? 'x' : 'o';
         }
       }
@@ -230,13 +224,11 @@ const GameBoard = (function () {
       _gameBoard[index] = playerMark;
       uiController.rightSectionController.renderGameBoard(_gameBoard);
 
-      //select next player
+      //select next player when the move was right else display error
       GameLogic.whoIsNext();
     } else {
       uiController.rightSectionController.gameBoardError(index);
     }
-
-    //   _gameBoard[computerAI.findBestMove(_gameBoard)] = playerMark;
 
     if (_checkForWinner()) {
       GameLogic.endRound(currPlayer);
@@ -245,22 +237,24 @@ const GameBoard = (function () {
     }
   };
 
-  const computerFillCell = function (currPlayer) {
+  const computerFillCell = function (computerObj) {
+    //remove the click event listener so the player cant click on the board while the computer is playing the insert it when the computer is done playing
     DomElement.board.removeEventListener('click', DomListener.gridCellClick);
 
+    // add some delay to give its some thinking like delay,
     setTimeout(() => {
-      _gameBoard[computerAI.findBestMove(_gameBoard)] = currPlayer.getMark();
+      _gameBoard[computerAI.findBestMove(_gameBoard)] = computerObj.getMark();
       uiController.rightSectionController.renderGameBoard(_gameBoard);
 
       if (_checkForWinner()) {
-        GameLogic.endRound(currPlayer);
+        GameLogic.endRound(computerObj);
       } else {
         _checkForRemainingEmptyCells();
-      }
 
-      GameLogic.whoIsNext();
-      DomElement.board.addEventListener('click', DomListener.gridCellClick);
-    }, 300);
+        GameLogic.whoIsNext();
+        DomElement.board.addEventListener('click', DomListener.gridCellClick);
+      }
+    }, 500);
   };
 
   computerAI.getExternalFunction(_checkForWinner, _checkIfCellEmpty);
@@ -289,7 +283,7 @@ const GameLogic = (function () {
       const player_1 = DomElement.GSD_playerVsComputerOption_inputs[0].value
         ? DomElement.GSD_playerVsComputerOption_inputs[0].value
         : 'Player 1';
-      const player_2 = 'computer';
+      const player_2 = 'Computer';
       player1 = new Player(player_1, 'x');
       player2 = new Player(player_2, 'o');
     }
@@ -562,7 +556,6 @@ const DomListener = (function () {
   };
 
   const gridCellClick = (e) => {
-    console.log('im here');
     if (e.target.closest('.board_column')) {
       e.stopPropagation();
       const clicked_column = e.target.closest('.board_column');
