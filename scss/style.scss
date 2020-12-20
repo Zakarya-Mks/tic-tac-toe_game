@@ -363,6 +363,7 @@ body {
     margin-top: 3.5rem;
     transition: transform 0.3s ease-in-out;
     display: none;
+    position: relative;
 
     .right-branding {
       display: flex;
@@ -552,9 +553,8 @@ body {
         }
 
         button {
-          // border: solid 1px #5d5d5d;
-          border: none;
-          border-bottom: solid 1px #5d5d5d;
+          border: solid 1px #5d5d5d;
+          @include b-radius-3px;
           background: transparent;
           font-size: 1rem;
           padding: 0.2rem;

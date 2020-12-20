@@ -463,6 +463,7 @@ body {
   margin-top: 3.5rem;
   transition: transform 0.3s ease-in-out;
   display: none;
+  position: relative;
 }
 .main_container .right_section .right-branding {
   display: flex;
@@ -636,8 +637,8 @@ body {
   font-weight: 500;
 }
 .main_container .right_section .roundEnded .card button {
-  border: none;
-  border-bottom: solid 1px #5d5d5d;
+  border: solid 1px #5d5d5d;
+  border-radius: 3px;
   background: transparent;
   font-size: 1rem;
   padding: 0.2rem;
