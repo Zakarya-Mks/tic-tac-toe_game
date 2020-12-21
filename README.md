@@ -16,4 +16,6 @@ The famouse Tic Tac Toe game with two game mode:
 
 > - [Tic Tac Toe](https://zakarya-mks.github.io/tic-tac-toe_game/)
 
+----------------------------------------------------------------------------
+
 ![image](https://user-images.githubusercontent.com/59210574/102777940-e7033c80-4391-11eb-9eb1-1f74ecb13b63.png)
