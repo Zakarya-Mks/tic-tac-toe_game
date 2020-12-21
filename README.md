@@ -18,4 +18,4 @@ The famouse Tic Tac Toe game with two game mode:
 
 ----------------------------------------------------------------------------
 
-![image](https://user-images.githubusercontent.com/59210574/102777940-e7033c80-4391-11eb-9eb1-1f74ecb13b63.png)
+<img src="https://user-images.githubusercontent.com/59210574/102777940-e7033c80-4391-11eb-9eb1-1f74ecb13b63.png" width="411" height="731">
