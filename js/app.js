@@ -305,6 +305,11 @@ const GameLogic = (function () {
     return player;
   };
 
+  const getNextPlayer = function () {
+    const player = [player1, player2][whoIsNextIndex === 0 ? 1 : 0];
+    return player;
+  };
+
   const whoIsNext = function () {
     whoIsNextIndex = whoIsNextIndex === 0 ? 1 : 0;
     [player1, player2][whoIsNextIndex].select();
@@ -346,7 +351,14 @@ const GameLogic = (function () {
     uiController.rightSectionController.displayRoundEndDialog(winner);
   };
 
-  return { startNewGame, endRound, newRound, whoIsNext, currentPlayer };
+  return {
+    startNewGame,
+    endRound,
+    newRound,
+    whoIsNext,
+    currentPlayer,
+    getNextPlayer,
+  };
 })();
 
 const uiController = (function () {
@@ -525,8 +537,24 @@ const uiController = (function () {
       DomElement.roundEnded_dialog.style.display = 'flex';
       [...[...DomElement.roundEnded_dialog.children][0].children].forEach(
         (item) => {
-          if (item.tagName === 'H1') {
-            item.textContent = winner ? `${winner.getName()} Wins` : 'DRAW';
+          //winning msg for single player mode
+          if (
+            GameLogic.currentPlayer().getName() == 'Computer' ||
+            GameLogic.getNextPlayer().getName() == 'Computer'
+          ) {
+            if (item.tagName === 'H1') {
+              // item.textContent = winner ? `${winner.getName()} Win!` : 'DRAW!';
+              if (winner && winner.getName() == 'Computer') {
+                item.textContent = 'You Lose!';
+              } else {
+                item.textContent = winner ? 'You Win!' : 'DRAW!';
+              }
+            }
+          } else {
+            //winning msg for multiple player mode
+            if (item.tagName === 'H1') {
+              item.textContent = winner ? `${winner.getName()} Win!` : 'DRAW!';
+            }
           }
         }
       );

@@ -25,7 +25,11 @@
 }
 
 @mixin screen-size($size) {
-  @if ($size == 'sm') {
+  @if ($size == 'xxs') {
+    @media screen and (max-width: 321px) {
+      @content;
+    }
+  } @else if ($size == 'sm') {
     @media screen and (min-width: 576px) {
       @content;
     }

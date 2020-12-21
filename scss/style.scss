@@ -59,12 +59,12 @@ body {
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        // margin-bottom: 1rem;
         border: $left-section-border;
         @include b-radius-3px;
         position: relative;
         transition: box-shadow 0.2s ease-in-out, transform 0.2s ease-in-out;
         padding: 1rem 0;
+        background-color: rgb(248, 248, 248);
 
         &:hover {
           @include pointer;
@@ -127,7 +127,7 @@ body {
       flex-direction: column;
 
       button {
-        padding: 0.5rem 3rem;
+        padding: 0.3rem 2.5rem;
         font-size: 1.2rem;
         line-height: 1.5;
         text-transform: uppercase;
@@ -267,7 +267,7 @@ body {
         align-items: center;
 
         h2 {
-          border: solid #5d5d5d 1px;
+          border: solid #a3bffa 1px;
           @include b-radius-3px;
           padding: 5px;
           width: 100%;
@@ -284,7 +284,7 @@ body {
           grid-gap: 1px;
           font-size: 1.5rem;
           grid-auto-flow: column;
-          background-color: #5d5d5d;
+          background-color: #a3bffa;
 
           span {
             background-color: #7f9cf5;
@@ -368,6 +368,8 @@ body {
       display: flex;
       align-items: center;
       @include mb-3rem;
+      position: absolute;
+      top: 10px;
 
       img {
         @include h50w50-px;
@@ -380,9 +382,15 @@ body {
         text-transform: capitalize;
       }
 
+      @include screen-size('xxs') {
+        position: static;
+        top: 0;
+      }
+
       @include screen-size('sm') {
         margin-top: 0;
         justify-content: flex-start;
+        top: 100px;
 
         h1 {
           @include fontS_2-5rem;
@@ -401,8 +409,11 @@ body {
 
     .turns {
       display: none;
-      flex-direction: column;
-      justify-content: center;
+      display: flex;
+      // flex-direction: column;
+      // justify-content: center;
+      justify-content: space-around;
+      width: 98vw;
       align-items: stretch;
       font-size: 1.3rem;
       text-transform: capitalize;
@@ -414,20 +425,28 @@ body {
         align-items: center;
         border: $left-section-border;
         @include b-radius-3px;
-        padding: 0 0.5rem 0 0;
-        width: 50%;
+        // padding: 0 0.5rem 0 0;
+        // width: 50%;
         margin-bottom: 1rem;
         transition: transform 0.2s ease-in-out;
 
         div {
-          width: 30px;
-          height: 30px;
-          margin-right: 0.5rem;
+          // width: 30px;
+          // height: 30px;
+          // margin-right: 0.5rem;
+          width: 70px;
+          height: 70px;
           background: url('./img/1193255.svg');
           background-size: 90%;
           background-position: center;
           background-repeat: no-repeat;
           // transition: transform 0.2s ease-in-out;
+
+          @include screen-size('sm') {
+            width: 30px;
+            height: 30px;
+            margin-right: 0.5rem;
+          }
         }
 
         &:nth-child(2) > div:first-child {
@@ -455,13 +474,24 @@ body {
           }
         }
 
+        span {
+          display: none;
+        }
+
         @include screen-size('sm') {
+          padding: 0 0.5rem 0 0;
           margin-bottom: 0;
+          flex-direction: row;
+
+          span {
+            display: inline;
+          }
         }
       }
 
       @include screen-size('sm') {
         flex-direction: row;
+        justify-content: center;
         padding: 0;
 
         width: 290px;
@@ -526,10 +556,11 @@ body {
         display: flex;
         flex-direction: column;
         align-items: center;
-        height: 150px;
+        justify-content: center;
+        height: 170px;
         min-width: 300px;
         padding: 2.5rem 2rem;
-        @include b-radius-3px;
+        border-radius: 8px;
         background-color: #fff;
         animation: scale-in-center 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)
           both;
@@ -541,24 +572,26 @@ body {
           display: flex;
           justify-content: flex-end;
           position: absolute;
-          bottom: 1rem;
+          bottom: 0.5rem;
           right: 1.1rem;
         }
 
         h1 {
           font-size: 1.4rem;
-          margin-bottom: 3rem;
+          margin-bottom: 2rem;
           font-weight: 500;
         }
 
         button {
           border: solid 1px #5d5d5d;
+          border: none;
           @include b-radius-3px;
           background: transparent;
           font-size: 1rem;
           padding: 0.2rem;
           text-transform: capitalize;
-          // @include b-radius-3px;
+          color: darken(#5a67d8, 5%);
+
           @include pointer;
 
           &:focus {
@@ -567,6 +600,7 @@ body {
 
           &:first-child {
             margin-right: 0.5rem;
+            color: lighten(#5a67d8, 5%);
           }
         }
 
