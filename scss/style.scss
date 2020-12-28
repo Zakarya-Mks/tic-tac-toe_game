@@ -169,7 +169,7 @@ body {
 
   .left_section {
     width: 320px;
-    height: 100vh;
+    min-height: 100%;
     background-color: $main-bg-color;
     position: absolute;
     z-index: 1000;
@@ -185,6 +185,7 @@ body {
       width: 100%;
       padding: 1rem;
       max-height: 900px;
+      // position: relative;
 
       .heading {
         display: flex;
@@ -259,6 +260,8 @@ body {
           }
         }
       }
+
+      //---------------------
       .stats {
         padding: 1rem 0;
         margin-top: 5rem;
@@ -274,53 +277,36 @@ body {
           font-size: 1.8rem;
           text-align: center;
           text-transform: capitalize;
-          margin-bottom: 3rem;
+          margin-bottom: 1rem;
         }
 
         .score {
+          display: flex;
+          flex-direction: column;
           width: 100%;
-          display: grid;
-          grid-template-columns: 0.6fr 1fr 1fr;
-          grid-gap: 1px;
-          font-size: 1.5rem;
-          grid-auto-flow: column;
-          background-color: #a3bffa;
 
-          span {
-            background-color: #7f9cf5;
-            width: 100%;
-            padding: 10px 0;
-          }
+          & > div {
+            border: solid #a3bffa 1px;
+            @include b-radius-3px;
 
-          span:first-child {
-            grid-column: 1 / span 1;
-            grid-row: 1;
-          }
-          span:nth-child(2) {
-            grid-column: 2 / span 1;
-            grid-row: 1;
-            text-align: center;
-            text-transform: capitalize;
-          }
-          span:nth-child(3) {
-            grid-column: 3 / span 1;
-            grid-row: 1;
-            text-align: center;
-            text-transform: capitalize;
-          }
+            .score_header {
+              font-size: 1.5rem;
+              padding: 0.5rem 0.5rem;
+              text-transform: capitalize;
+              border-bottom: solid 1px #a3bffa;
+              background-color: #a3bffa;
+            }
 
-          span:nth-last-child(-n + 3) {
-            grid-column: 1 / span 1;
-            text-transform: capitalize;
-          }
+            .score_body {
+              display: flex;
+              justify-content: center;
+              padding: 2rem 0;
+              font-size: 3rem;
+            }
 
-          span:nth-last-child(-n + 9):not(:nth-last-child(-n + 3)) {
-            text-align: center;
-          }
-
-          span.draw {
-            grid-column: 2 / span 2;
-            grid-row: 4;
+            &:first-child {
+              margin-bottom: 1rem;
+            }
           }
         }
 
@@ -333,6 +319,14 @@ body {
             margin-right: 1rem;
             text-transform: capitalize;
           }
+
+          @include screen-size('xxs') {
+            bottom: 20px;
+          }
+        }
+
+        @include screen-size('xxs') {
+          margin-top: 2rem;
         }
 
         @include screen-size('md') {
@@ -410,8 +404,6 @@ body {
     .turns {
       display: none;
       display: flex;
-      // flex-direction: column;
-      // justify-content: center;
       justify-content: space-around;
       width: 98vw;
       align-items: stretch;
@@ -425,22 +417,16 @@ body {
         align-items: center;
         border: $left-section-border;
         @include b-radius-3px;
-        // padding: 0 0.5rem 0 0;
-        // width: 50%;
         margin-bottom: 1rem;
         transition: transform 0.2s ease-in-out;
 
         div {
-          // width: 30px;
-          // height: 30px;
-          // margin-right: 0.5rem;
           width: 70px;
           height: 70px;
           background: url('./img/1193255.svg');
           background-size: 90%;
           background-position: center;
           background-repeat: no-repeat;
-          // transition: transform 0.2s ease-in-out;
 
           @include screen-size('sm') {
             width: 30px;

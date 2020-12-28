@@ -8,6 +8,7 @@ const DomElement = (function () {
   const GSD_twoPlayerOption = document.querySelector('.two_players');
   const startBtn = document.querySelector('#start');
   const leftSectionLog = document.querySelector('.score');
+  const leftSectionLogDraw = document.querySelector('.score .draw');
   const leftSectionRound = document.querySelector('.round_nbr');
   const turns = document.querySelector('.turns');
 
@@ -33,69 +34,145 @@ const DomElement = (function () {
     GSD_playerVsComputerOption_inputs,
     startBtn,
     leftSectionLog,
+    leftSectionLogDraw,
     turns,
     leftSectionRound,
     roundEnded_dialog,
   };
 })();
 
-class Player {
-  constructor(name, mark) {
-    this._name = name;
-    this._mark = mark;
-    this._score = {
-      won: 0,
-    };
-  }
+const Player = function (Name, Mark) {
+  const name = Name;
+  const mark = Mark;
+  const score = {
+    won: 0,
+    lost: 0,
+  };
 
-  get name() {
-    return this._name;
-  }
+  const getName = () => {
+    return name;
+  };
 
-  get mark() {
-    return this._mark;
-  }
+  const getMark = () => {
+    return mark;
+  };
 
-  get score() {
-    return this._score.won;
-  }
+  const getScore = () => {
+    return [score.won, score.lost];
+  };
 
-  set won(wonOrNot) {
+  const won = function (wonOrNot) {
     if (wonOrNot) {
-      this._score.won++;
-    }
-  }
-
-  select() {
-    uiController.rightSectionController.removeActivePlayerMark(this.name);
-  }
-}
-
-class GameBoard {
-  static _gameBoard = new Array(9);
-
-  static _checkIfCellEmpty(index) {
-    if (index || index == 0) {
-      return !this._gameBoard[index] ? true : false;
+      score.won++;
     } else {
-      return this._gameBoard.includes(undefined);
+      score.lost++;
+    }
+  };
+
+  const select = () => {
+    uiController.rightSectionController.removeActivePlayerMark(name);
+  };
+
+  return { getName, getMark, getScore, select, won };
+};
+
+const computerAI = (function () {
+  let checkForWinner, isMovesLeft;
+
+  function getExternalFunction(_checkForWinner, _isMovesLeft) {
+    checkForWinner = _checkForWinner;
+    isMovesLeft = _isMovesLeft;
+  }
+
+  function _evaluate() {
+    let winner = checkForWinner();
+    return winner == 'x' ? -10 : winner == 'o' ? 10 : 0;
+  }
+
+  function _minMax(board, depth, isMax) {
+    let score = _evaluate();
+
+    if (score == 10) return score;
+
+    if (score == -10) return score;
+
+    if (!isMovesLeft()) return 0;
+
+    if (isMax) {
+      let best = -1000;
+
+      for (let i = 0; i < board.length; i++) {
+        if (isMovesLeft(i)) {
+          board[i] = 'o';
+          best = Math.max(best, _minMax(board, depth + 1, !isMax));
+          board[i] = undefined;
+        }
+      }
+
+      return best;
+    } else {
+      let best = 1000;
+
+      for (let i = 0; i < board.length; i++) {
+        if (isMovesLeft(i)) {
+          board[i] = 'x';
+          best = Math.min(best, _minMax(board, depth + 1, !isMax));
+          board[i] = undefined;
+        }
+      }
+
+      return best;
     }
   }
 
-  static _checkForRemainingEmptyCells() {
-    if (!this._gameBoard.includes(undefined)) {
+  function findBestMove(board) {
+    let bestVal = -1000;
+    let moveIndex = -1;
+
+    for (let i = 0; i < board.length; i++) {
+      if (isMovesLeft(i)) {
+        board[i] = 'o';
+        let moveVal = _minMax(board, 0, false);
+        board[i] = undefined;
+
+        if (moveVal > bestVal) {
+          moveIndex = i;
+          bestVal = moveVal;
+        }
+      }
+    }
+
+    return moveIndex;
+  }
+
+  return { findBestMove, getExternalFunction };
+})();
+
+const GameBoard = (function () {
+  let _gameBoard = new Array(9);
+
+  const _checkIfCellEmpty = (index) => {
+    if (index || index == 0) {
+      return !_gameBoard[index] ? true : false;
+    } else {
+      return _gameBoard.includes(undefined);
+    }
+  };
+
+  const _checkForRemainingEmptyCells = () => {
+    if (!_gameBoard.includes(undefined)) {
       // if the array is dull the round is a DRAW, undefined mean no one wins
-      this._endTheGame();
+      _endTheGame();
       GameLogic.endRound(undefined);
     }
-  }
+  };
 
-  static _endTheGame() {
+  const _endTheGame = () => {
     DomElement.board.removeEventListener('click', DomListener.gridCellClick);
     uiController.rightSectionController.removeActivePlayerMark();
-  }
+  };
 
-  static _checkForWinner() {
+  const _checkForWinner = function () {
     const winningFormulas = [
       [1, 2, 3],
       [4, 5, 6],
@@ -110,10 +187,10 @@ class GameBoard {
     let o_arr = [];
 
     //when the first player enter the 3rd mark start checking for a winner
-    const resultArray = this._gameBoard.filter((item) => item != undefined);
+    const resultArray = _gameBoard.filter((item) => item != undefined);
     if (resultArray.length >= 5) {
       //get indexes of each mark in separate array
-      this._gameBoard.forEach((item, index) => {
+      _gameBoard.forEach((item, index) => {
         if (item == 'x') {
           x_arr.push(index + 1);
         } else if (item == 'o') {
@@ -132,20 +209,20 @@ class GameBoard {
         }
       }
     }
-  }
+  };
 
-  static resetBoard() {
-    this._gameBoard = new Array(9);
+  const resetBoard = function () {
+    _gameBoard = new Array(9);
     uiController.rightSectionController.cleanGameBoard();
-  }
+  };
 
-  static fillCell(index) {
+  const fillCell = (index) => {
     const currPlayer = GameLogic.currentPlayer();
-    const playerMark = currPlayer.mark;
+    const playerMark = currPlayer.getMark();
 
-    if (this._checkIfCellEmpty(index)) {
-      this._gameBoard[index] = playerMark;
-      uiController.rightSectionController.renderGameBoard(this._gameBoard);
+    if (_checkIfCellEmpty(index)) {
+      _gameBoard[index] = playerMark;
+      uiController.rightSectionController.renderGameBoard(_gameBoard);
 
       //select next player when the move was right else display error
       GameLogic.whoIsNext();
@@ -153,97 +230,37 @@ class GameBoard {
       uiController.rightSectionController.gameBoardError(index);
     }
 
-    if (this._checkForWinner()) {
+    if (_checkForWinner()) {
       GameLogic.endRound(currPlayer);
     } else {
-      this._checkForRemainingEmptyCells();
+      _checkForRemainingEmptyCells();
     }
-  }
-}
+  };
 
-class ComputerAI extends GameBoard {
-  static _evaluate() {
-    let winner = this._checkForWinner();
-    return winner == 'x' ? -10 : winner == 'o' ? 10 : 0;
-  }
-
-  static _minMax(board, depth, isMax) {
-    let score = this._evaluate();
-
-    if (score == 10) return score;
-
-    if (score == -10) return score;
-
-    if (!this._checkIfCellEmpty()) return 0;
-
-    if (isMax) {
-      let best = -1000;
-
-      for (let i = 0; i < board.length; i++) {
-        if (this._checkIfCellEmpty(i)) {
-          board[i] = 'o';
-          best = Math.max(best, this._minMax(board, depth + 1, !isMax));
-          board[i] = undefined;
-        }
-      }
-
-      return best;
-    } else {
-      let best = 1000;
-
-      for (let i = 0; i < board.length; i++) {
-        if (this._checkIfCellEmpty(i)) {
-          board[i] = 'x';
-          best = Math.min(best, this._minMax(board, depth + 1, !isMax));
-          board[i] = undefined;
-        }
-      }
-
-      return best;
-    }
-  }
-
-  static findBestMove() {
-    let bestVal = -1000;
-    let moveIndex = -1;
-
-    for (let i = 0; i < this._gameBoard.length; i++) {
-      if (this._checkIfCellEmpty(i)) {
-        this._gameBoard[i] = 'o';
-        let moveVal = this._minMax(this._gameBoard, 0, false);
-        this._gameBoard[i] = undefined;
-
-        if (moveVal > bestVal) {
-          moveIndex = i;
-          bestVal = moveVal;
-        }
-      }
-    }
-
-    return moveIndex;
-  }
-
-  static computerFillCell(computerPlayerObj) {
+  const computerFillCell = function (computerObj) {
     //remove the click event listener so the player cant click on the board while the computer is playing the insert it when the computer is done playing
     DomElement.board.removeEventListener('click', DomListener.gridCellClick);
 
     // add some delay to give its some thinking like delay,
     setTimeout(() => {
-      this._gameBoard[ComputerAI.findBestMove(this._gameBoard)] =
-        computerPlayerObj.mark;
-      uiController.rightSectionController.renderGameBoard(this._gameBoard);
+      _gameBoard[computerAI.findBestMove(_gameBoard)] = computerObj.getMark();
+      uiController.rightSectionController.renderGameBoard(_gameBoard);
 
-      if (this._checkForWinner()) {
-        GameLogic.endRound(computerPlayerObj);
+      if (_checkForWinner()) {
+        GameLogic.endRound(computerObj);
       } else {
-        this._checkForRemainingEmptyCells();
+        _checkForRemainingEmptyCells();
 
         GameLogic.whoIsNext();
         DomElement.board.addEventListener('click', DomListener.gridCellClick);
       }
     }, 500);
-  }
-}
+  };
+
+  computerAI.getExternalFunction(_checkForWinner, _checkIfCellEmpty);
+
+  return { fillCell, resetBoard, computerFillCell };
+})();
 
 const GameLogic = (function () {
   let player1, player2;
@@ -272,12 +289,12 @@ const GameLogic = (function () {
     }
 
     uiController.leftSectionController.updateLogPlayerNames(
-      player1.name,
-      player2.name
+      player1.getName(),
+      player2.getName()
     );
     uiController.rightSectionController.DisplayNameAndIcon(
-      player1.name,
-      player2.name
+      player1.getName(),
+      player2.getName()
     );
     uiController.leftSectionController.updateLogRound(round);
     player1.select();
@@ -297,8 +314,8 @@ const GameLogic = (function () {
     whoIsNextIndex = whoIsNextIndex === 0 ? 1 : 0;
     [player1, player2][whoIsNextIndex].select();
 
-    if (currentPlayer().name.toLowerCase() == 'computer') {
-      ComputerAI.computerFillCell(currentPlayer());
+    if (currentPlayer().getName().toLowerCase() == 'computer') {
+      GameBoard.computerFillCell(currentPlayer());
     }
   };
 
@@ -314,15 +331,19 @@ const GameLogic = (function () {
   const endRound = function (winner) {
     if (winner) {
       if (winner === player1) {
-        player1.won = true;
+        player1.won(true);
+        player2.won(false);
       } else {
-        player2.won = true;
+        player1.won(false);
+        player2.won(true);
       }
 
       uiController.leftSectionController.updateScore(
-        player1.score,
-        player2.score
+        player1.getScore(),
+        player2.getScore()
       );
+    } else {
+      DomElement.leftSectionLogDraw.textContent = ++draw;
     }
 
     round++;
@@ -425,17 +446,42 @@ const uiController = (function () {
     },
     updateLogPlayerNames: function (player1, player2) {
       [...DomElement.leftSectionLog.children].forEach((item, index) => {
-        [...[...item.children][0].children][0].textContent = [player1, player2][
-          index
-        ];
+        if (['Player1', 'Player2'].includes(item.className)) {
+          switch (item.className) {
+            case 'Player1':
+              item.textContent = player1;
+              break;
+            case 'Player2':
+              item.textContent = player2;
+              break;
+            default:
+              break;
+          }
+        }
       });
     },
     updateScore: function (player1Score, player2Score) {
-      [...DomElement.leftSectionLog.children].forEach((item, index) => {
-        [...[...item.children][1].children][0].textContent = [
-          player1Score,
-          player2Score,
-        ][index];
+      [...DomElement.leftSectionLog.children].forEach((item) => {
+        if (
+          ['p1w', 'p1l', 'p1d', 'p2w', 'p2l', 'p2d'].includes(item.className)
+        ) {
+          switch (item.className) {
+            case 'p1w':
+              item.textContent = player1Score[0];
+              break;
+            case 'p1l':
+              item.textContent = player1Score[1];
+              break;
+            case 'p2w':
+              item.textContent = player2Score[0];
+              break;
+            case 'p2l':
+              item.textContent = player2Score[1];
+              break;
+            default:
+              break;
+          }
+        }
       });
     },
     updateLogRound: function (round) {
@@ -493,12 +539,12 @@ const uiController = (function () {
         (item) => {
           //winning msg for single player mode
           if (
-            GameLogic.currentPlayer().name == 'Computer' ||
-            GameLogic.getNextPlayer().name == 'Computer'
+            GameLogic.currentPlayer().getName() == 'Computer' ||
+            GameLogic.getNextPlayer().getName() == 'Computer'
           ) {
             if (item.tagName === 'H1') {
-              // item.textContent = winner ? `${winner.name} Win!` : 'DRAW!';
-              if (winner && winner.name == 'Computer') {
+              // item.textContent = winner ? `${winner.getName()} Win!` : 'DRAW!';
+              if (winner && winner.getName() == 'Computer') {
                 item.textContent = 'You Lose!';
               } else {
                 item.textContent = winner ? 'You Win!' : 'DRAW!';
@@ -507,7 +553,7 @@ const uiController = (function () {
           } else {
             //winning msg for multiple player mode
             if (item.tagName === 'H1') {
-              item.textContent = winner ? `${winner.name} Win!` : 'DRAW!';
+              item.textContent = winner ? `${winner.getName()} Win!` : 'DRAW!';
             }
           }
         }
